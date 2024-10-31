@@ -3,5 +3,8 @@
   "uuid": "881f34ef-a2bc-400a-89a4-3d9900ef041a",
   "creator": {
     "version": "3.8.3"
+  },
+  "dependencies": {
+    "crypto-es": "^2.1.0"
   }
 }

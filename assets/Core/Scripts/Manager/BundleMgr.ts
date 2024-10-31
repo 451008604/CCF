@@ -4,10 +4,8 @@ const { ccclass, property } = _decorator;
 /**
  * 分包管理器
  */
-@ccclass('BundleMgr')
 export class BundleMgr {
     private constructor() { }
-
     static readonly instance: BundleMgr = new BundleMgr();
 
     /**

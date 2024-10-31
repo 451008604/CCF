@@ -5,6 +5,11 @@ const { ccclass, property } = _decorator;
 export class Main extends Component {
     start() {
         app.log.info("进入主场景");
+
+
+        app.data.setData("abc", 123);
+
+        app.log.info(app.data.getText("abc"));
     }
 
     update(deltaTime: number) {

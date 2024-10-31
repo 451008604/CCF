@@ -4,7 +4,6 @@ const { ccclass, property } = _decorator;
 /**
  * 日志管理类，用于统一日志输出格式
  */
-@ccclass('LogMgr')
 export class LogMgr {
 
     /**
