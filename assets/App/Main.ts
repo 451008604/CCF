@@ -17,15 +17,13 @@ export class Main extends Component {
     }
 
     protected onLoad(): void {
-        app.bundle.getBundle("Bundles", this.BundleLoadProgree).then((bundle) => {
+        app.res.loadResDir("Bundles", (completedCount, totalCount, item) => {
+            app.log.info("分包加载进度", (completedCount / totalCount).toFixed(2), "%");
+        }).then((bundle) => {
             if (bundle) {
                 app.log.info("分包加载完成", bundle);
             }
         });
     }
-    BundleLoadProgree(arg0: number) {
-        app.log.info("分包加载进度", arg0.toFixed(2), "%");
-    }
-
 }
 

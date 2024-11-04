@@ -2,21 +2,27 @@ import { _decorator, Component, Node } from 'cc';
 import { LogMgr } from './Manager/LogMgr';
 import { BundleMgr } from './Manager/BundleMgr';
 import { DataMgr } from './Manager/DataMgr';
-const { ccclass, property } = _decorator;
+import { ResMgr } from './Manager/ResMgr';
 
 /**
  * Core 类
  * 负责映射导出框架接口
  */
 export class Core {
+    instance: any;
     /** 日志管理器 */
-    log = LogMgr;
+    log: LogMgr = LogMgr.instance;
 
     /**分包管理器 */
-    bundle = BundleMgr.instance;
+    bundle: BundleMgr = BundleMgr.instance;
 
     /**数据管理器 */
-    data = DataMgr.instance;
+    data: DataMgr = DataMgr.instance;
+
+    /**资源管理器 */
+    res: ResMgr = ResMgr.instance;
+
+
 }
 
 

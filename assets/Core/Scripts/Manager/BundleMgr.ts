@@ -1,5 +1,4 @@
-import { _decorator, AssetManager, assetManager, Component, Node } from 'cc';
-const { ccclass, property } = _decorator;
+import { _decorator, AssetManager, assetManager } from 'cc';
 
 /**
  * 分包管理器

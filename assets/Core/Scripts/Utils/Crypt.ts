@@ -4,7 +4,6 @@ import CryptoES from "crypto-es";
  * 加解密工具类
  * 提供文本和二进制数据的加解密功能。
  */
-
 export class Crypt {
     /**
      * 文本加密函数
