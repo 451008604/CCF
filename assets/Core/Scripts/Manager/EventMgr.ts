@@ -5,26 +5,49 @@ export class EventMgr {
     private constructor() { }
     static readonly instance: EventMgr = new EventMgr();
 
-    private listenMap = new Map<number, Map<any, Function>>();
+    private listenMap = new Map<number, Function[]>();
 
-    add(cmd: number, callback: Function, thisObject: any) {
+    /**
+     * 添加事件监听
+     * @param cmd 事件ID
+     * @param handler 事件处理函数
+     */
+    addListen(cmd: number, handler: Function) {
         let list = this.listenMap.get(cmd);
         if (!list) {
-            list = new Map();
+            list = [];
             this.listenMap.set(cmd, list);
         }
-        list.set(thisObject, callback);
+        list.push(handler);
     }
 
-    remove(cmd: number, thisObject: any) {
+    /**
+     * 移除事件监听
+     * @param cmd 事件ID
+     * @param handler 事件处理函数
+    */
+    removeListen(cmd: number, handler: Function) {
         let list = this.listenMap.get(cmd);
-        list.delete(thisObject);
+        if (list) {
+            app.log.info(list);
+            for (let i = 0; i < list.length; i++) {
+                if (list[i] == handler) {
+                    list.splice(i, 1);
+                    i--;
+                }
+            }
+        }
     }
 
+    /**
+     * 广播事件
+     * @param cmd 事件ID
+     * @param data 形参数据
+     */
     send(cmd: number, data: any) {
         let list = this.listenMap.get(cmd);
-        list.forEach(callback => {
-            callback(data);
-        });
+        if (list) {
+            list.forEach(callback => { callback(data); });
+        }
     }
 }

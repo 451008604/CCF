@@ -8,13 +8,6 @@ export class LogMgr {
     static readonly instance: LogMgr = new LogMgr();
 
     /**
-     * 用于输出调试信息
-     */
-    get debug() {
-        return window.console.log.bind(window.console, '%c【调试】', 'color: white; background-color: #007BFF; font-weight: bold; font-size: 14px;');
-    }
-
-    /**
      * 用于输出一般信息
      */
     get info() {
