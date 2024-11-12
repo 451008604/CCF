@@ -4,6 +4,7 @@ import { BundleMgr } from './Manager/BundleMgr';
 import { DataMgr } from './Manager/DataMgr';
 import { ResMgr } from './Manager/ResMgr';
 import { AudioMgr } from './Manager/AudioMgr';
+import { EventMgr } from './Manager/EventMgr';
 
 /**
  * Core 类
@@ -26,6 +27,8 @@ export class Core {
     /**音频管理器 */
     audio: AudioMgr = AudioMgr.instance;
 
+    /**事件管理器 */
+    event: EventMgr = EventMgr.instance;
 }
 
 
