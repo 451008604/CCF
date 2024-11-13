@@ -5,31 +5,23 @@ const { ccclass, property } = _decorator;
 export class Main extends Component {
     start() {
         app.log.info("进入主场景");
-        app.log.warn("进入主场景");
-        app.log.err("进入主场景");
-
-
-        app.data.setData("abc", 123);
-
-        app.log.info(app.data.getText("abc"));
 
 
         // 事件测试
         app.event.addListen(10001, function (data: any) {
-            app.log.info("测试事件", data, this);
-        });
+            app.log.info("测试事件10001", data, this);
+        }, this);
 
         // 事件测试
         app.event.addListen(10002, (data: any) => {
-            app.log.info("测试事件", data, this);
-        });
+            app.log.info("测试事件10002", data, this);
+        }, this);
 
-
-        new test(13).unListen();
+        new test(13);
         app.log.info(app.event);
 
-        app.event.send(10001, "66666");
-        app.event.send(10002, "66666");
+        app.event.send(10001, ["66666"]);
+        app.event.send(10002, ["66666"]);
     }
 
     update(deltaTime: number) {
@@ -52,7 +44,7 @@ class test {
     flag = 0;
     constructor(_flag) {
         this.flag = _flag;
-        app.event.addListen(10001, this.listHandler.bind(this));
+        app.event.addListen(10001, this.listHandler, this);
     }
 
     listHandler(data: any) {
@@ -61,7 +53,7 @@ class test {
 
     unListen() {
         app.log.info(app.event);
-        app.event.removeListen(10001, this.listHandler.bind(this));
+        app.event.removeListen(10001, this);
         app.log.info(app.event);
     }
 }

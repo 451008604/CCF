@@ -5,38 +5,30 @@ export class EventMgr {
     private constructor() { }
     static readonly instance: EventMgr = new EventMgr();
 
-    private listenMap = new Map<number, Function[]>();
+    private listenMap = new Map<number, Map<any, Function>>();
 
     /**
      * 添加事件监听
      * @param cmd 事件ID
      * @param handler 事件处理函数
+     * @param thisObject 事件作用域
      */
-    addListen(cmd: number, handler: Function) {
+    addListen(cmd: number, handler: Function, thisObject: Object) {
         let list = this.listenMap.get(cmd);
         if (!list) {
-            list = [];
+            list = new Map();
             this.listenMap.set(cmd, list);
         }
-        list.push(handler);
+        list.set(thisObject, handler);
     }
 
     /**
      * 移除事件监听
      * @param cmd 事件ID
-     * @param handler 事件处理函数
+     * @param thisObject 事件作用域
     */
-    removeListen(cmd: number, handler: Function) {
-        let list = this.listenMap.get(cmd);
-        if (list) {
-            app.log.info(list);
-            for (let i = 0; i < list.length; i++) {
-                if (list[i] == handler) {
-                    list.splice(i, 1);
-                    i--;
-                }
-            }
-        }
+    removeListen(cmd: number, thisObject: Object) {
+        this.listenMap.get(cmd)?.delete(thisObject);
     }
 
     /**
@@ -44,10 +36,9 @@ export class EventMgr {
      * @param cmd 事件ID
      * @param data 形参数据
      */
-    send(cmd: number, data: any) {
-        let list = this.listenMap.get(cmd);
-        if (list) {
-            list.forEach(callback => { callback(data); });
-        }
+    send(cmd: number, data: any[]) {
+        this.listenMap.get(cmd)?.forEach((callback, thisObject) => {
+            callback.apply(thisObject, data);
+        });
     }
 }

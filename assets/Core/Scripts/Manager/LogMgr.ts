@@ -11,20 +11,20 @@ export class LogMgr {
      * 用于输出一般信息
      */
     get info() {
-        return window.console.log.bind(window.console, '%c【信息】', 'color: white; background-color: #28A745; font-weight: bold; font-size: 14px;');
+        return window.console.log.bind(window.console, '%c[ info ]', 'color: white; background-color: #198754; font-weight: bold; font-size: 1rem;');
     }
 
     /**
      * 用于输出警告信息
      */
     get warn() {
-        return window.console.log.bind(window.console, '%c【警告】', 'color: black; background-color: #FFC107; font-weight: bold; font-size: 14px;');
+        return window.console.log.bind(window.console, '%c[ warn ]', 'color: white; background-color: #ffc107; font-weight: bold; font-size: 1rem;');
     }
 
     /**
      * 用于输出错误信息
      */
     get err() {
-        return window.console.log.bind(window.console, '%c【错误】', 'color: white; background-color: #DC3545; font-weight: bold; font-size: 14px;');
+        return window.console.log.bind(window.console, '%c[ err  ]', 'color: white; background-color: #dc3545; font-weight: bold; font-size: 1rem;');
     }
 }
