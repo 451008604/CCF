@@ -8,7 +8,7 @@ export class EventMgr {
     private listenMap = new Map<number, Map<any, Function>>();
 
     /**
-     * 添加事件监听
+     * 添加监听事件
      * @param cmd 事件ID
      * @param handler 事件处理函数
      * @param thisObject 事件作用域
@@ -23,7 +23,7 @@ export class EventMgr {
     }
 
     /**
-     * 移除事件监听
+     * 移除监听事件
      * @param cmd 事件ID
      * @param thisObject 事件作用域
     */
@@ -36,9 +36,9 @@ export class EventMgr {
      * @param cmd 事件ID
      * @param data 形参数据
      */
-    send(cmd: number, data: any[]) {
+    send(cmd: number, ...data: any) {
         this.listenMap.get(cmd)?.forEach((callback, thisObject) => {
-            callback.apply(thisObject, data);
+            callback.call(thisObject, ...data);
         });
     }
 }

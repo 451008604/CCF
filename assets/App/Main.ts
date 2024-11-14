@@ -1,4 +1,5 @@
-import { _decorator, Component, log, Node } from 'cc';
+import { _decorator, Component, Enum, log, Node } from 'cc';
+import { ComponentBase } from '../Core/Scripts/ComponentBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('Main')
@@ -6,22 +7,18 @@ export class Main extends Component {
     start() {
         app.log.info("进入主场景");
 
+        for (let i = 0; i < 10; i++) {
+            let t = this.addComponent(test);
+            t.init(i);
+            t.destroy();
+            let t1 = this.addComponent(test1);
+            t1.init(i);
+            t1.destroy();
+        }
 
-        // 事件测试
-        app.event.addListen(10001, function (data: any) {
-            app.log.info("测试事件10001", data, this);
-        }, this);
 
-        // 事件测试
-        app.event.addListen(10002, (data: any) => {
-            app.log.info("测试事件10002", data, this);
-        }, this);
+        console.log(app.event);
 
-        new test(13);
-        app.log.info(app.event);
-
-        app.event.send(10001, ["66666"]);
-        app.event.send(10002, ["66666"]);
     }
 
     update(deltaTime: number) {
@@ -39,21 +36,37 @@ export class Main extends Component {
     }
 }
 
-
-class test {
+const a = 10001;
+class test extends ComponentBase {
     flag = 0;
-    constructor(_flag) {
+
+    init(_flag: number) {
         this.flag = _flag;
-        app.event.addListen(10001, this.listHandler, this);
+
+        this.addListen(a, this.listHandler);
     }
 
     listHandler(data: any) {
         app.log.info(data, this.flag);
     }
 
-    unListen() {
-        app.log.info(app.event);
-        app.event.removeListen(10001, this);
-        app.log.info(app.event);
+    onDestroy(): void {
+
     }
+}
+
+
+class test1 extends ComponentBase {
+    flag = 0;
+
+    init(_flag: number) {
+        this.flag = _flag;
+
+        this.addListen(a, this.listHandler);
+    }
+
+    listHandler(data: any) {
+        app.log.info(data, this.flag);
+    }
+
 }
