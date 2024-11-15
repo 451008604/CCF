@@ -1,10 +1,11 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator } from 'cc';
 import { LogMgr } from './Manager/LogMgr';
 import { BundleMgr } from './Manager/BundleMgr';
 import { DataMgr } from './Manager/DataMgr';
 import { ResMgr } from './Manager/ResMgr';
 import { AudioMgr } from './Manager/AudioMgr';
 import { EventMgr } from './Manager/EventMgr';
+import { TimerMgr } from './Manager/TimerMgr';
 
 /**
  * Core 类
@@ -29,6 +30,9 @@ export class Core {
 
     /**事件管理器 */
     event: EventMgr = EventMgr.instance;
+
+    /**定时任务管理器 */
+    timer: TimerMgr = TimerMgr.instance;
 }
 
 
