@@ -5,7 +5,7 @@ export class EventMgr {
     private constructor() { }
     static readonly instance: EventMgr = new EventMgr();
 
-    private listenMap = new Map<number, Map<any, Function>>();
+    private listenMap: Map<number, Map<any, Function>> = new Map();
 
     /**
      * 添加监听事件
