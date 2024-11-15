@@ -28,7 +28,11 @@ export class EventMgr {
      * @param thisObject 事件作用域
     */
     removeListen(cmd: number, thisObject: Object) {
-        this.listenMap.get(cmd)?.delete(thisObject);
+        let list = this.listenMap.get(cmd);
+        list?.delete(thisObject);
+        if (list?.size == 0) {
+            this.listenMap.delete(cmd);
+        }
     }
 
     /**

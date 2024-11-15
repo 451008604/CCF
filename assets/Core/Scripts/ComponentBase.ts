@@ -1,4 +1,4 @@
-import { Component } from "cc";
+import { Component, NodeEventType } from "cc";
 
 export class ComponentBase extends Component {
     constructor() {
@@ -16,16 +16,21 @@ export class ComponentBase extends Component {
     addListen(cmd: number, handler: Function) {
         app.event.addListen(cmd, handler, this);
         this.listenList.push(cmd);
+
+        if (this.listenList.length == 1) {
+            // 监听节点销毁时，自动清理挂载的自定义监听
+            this.node.once(NodeEventType.NODE_DESTROYED, this.destroyAfterHandler, this);
+        }
     }
 
     /**
-     * 自动移除组件中挂载的监听事件
+     * 节点销毁后执行
      */
-    private removeListen() {
+    private destroyAfterHandler() {
+        // 自动移除组件中挂载的监听事件
         for (const cmd of this.listenList) {
             app.event.removeListen(cmd, this);
         }
-        debugger;
     }
 
 }
