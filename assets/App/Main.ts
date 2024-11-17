@@ -1,4 +1,4 @@
-import { _decorator, Component, Director, director, log, Node, NodeEventType } from 'cc';
+import { _decorator, Component, Director, director, isValid, log, Node, NodeEventType } from 'cc';
 import { ComponentBase } from '../Core/Scripts/ComponentBase';
 const { ccclass, property } = _decorator;
 
@@ -32,7 +32,7 @@ class test extends ComponentBase {
     }
 
     listHandler(data: any) {
-        app.log.info(data, this.flag);
+        app.log.info(this.flag, data);
     }
 
 }
