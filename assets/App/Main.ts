@@ -1,5 +1,4 @@
-import { _decorator, Component, Director, director, isValid, log, Node, NodeEventType } from 'cc';
-import { ComponentBase } from '../Core/Scripts/ComponentBase';
+import { _decorator, Component, instantiate, Layers, Prefab, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Main')
@@ -15,24 +14,21 @@ export class Main extends Component {
         // });
     }
 
-    start() {
+    async start() {
         app.log.info("进入主场景");
 
+
+        // 测试多语言配置
+        await app.language.loadLanguageData("Bundles");
+        const prefab = await app.res.loadRes<Prefab>('Bundles/Node');
+        const newNode = instantiate(prefab);
+        const scale = newNode.getScale(new Vec3());
+        // scale.x = scale.y = scale.z *= 1.5;
+        newNode.setScale(scale);
+        newNode.children.forEach(node => {
+            node.layer = Layers.Enum.UI_2D;
+        });
+        this.node.addChild(newNode);
+
     }
-}
-
-const a = 10001;
-class test extends ComponentBase {
-    flag = 0;
-
-    init(_flag: number) {
-        this.flag = _flag;
-
-        this.addListen(a, this.listHandler);
-    }
-
-    listHandler(data: any) {
-        app.log.info(this.flag, data);
-    }
-
 }

@@ -1,5 +1,5 @@
 import { ComponentBase } from "../ComponentBase";
-import { FrameConst } from "../Const";
+import { FrameEnum } from "../FrameEnum";
 
 /**
  * 多语言抽象基类
@@ -8,7 +8,7 @@ export abstract class I18nBase extends ComponentBase {
 
     protected onLoadAfter(): void {
         // 注册语言更新事件
-        this.addListen(FrameConst.LangChange, this.refresh);
+        this.addListen(FrameEnum.LangChange, this.refresh);
 
         this.refresh();
     }
@@ -16,5 +16,5 @@ export abstract class I18nBase extends ComponentBase {
     /**
      * 刷新组件显示属性
      */
-    abstract refresh(): void;
+    protected abstract refresh(): void;
 }

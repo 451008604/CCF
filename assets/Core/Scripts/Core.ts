@@ -6,6 +6,7 @@ import { ResMgr } from './Manager/ResMgr';
 import { AudioMgr } from './Manager/AudioMgr';
 import { EventMgr } from './Manager/EventMgr';
 import { TimerMgr } from './Manager/TimerMgr';
+import { LangMgr } from './Manager/LangMgr';
 
 /**
  * Core 类
@@ -33,6 +34,9 @@ export class Core {
 
     /**定时任务管理器 */
     timer: TimerMgr = TimerMgr.instance;
+
+    /**多语言管理器 */
+    language: LangMgr = LangMgr.instance;
 }
 
 
