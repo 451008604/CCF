@@ -14,10 +14,7 @@ export class ResMgr {
      * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    async loadRes<T extends Asset>(
-        resPath: string,
-        progressFun?: (completedCount: number, totalCount: number, item: any) => void,
-    ) {
+    async loadRes<T extends Asset>(resPath: string, progressFun?: (completedCount: number, totalCount: number, item: any) => void,) {
         try {
             const { bundleName, path } = Parser.path(resPath);
             const bundle = await app.bundle.getBundle(bundleName);
@@ -34,24 +31,16 @@ export class ResMgr {
      * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    private loadAsset<T>(
-        bundle: AssetManager.Bundle,
-        path: string,
-        progressFun: (completedCount: number, totalCount: number, item: any) => void,
-    ) {
+    private loadAsset<T>(bundle: AssetManager.Bundle, path: string, progressFun: (completedCount: number, totalCount: number, item: any) => void,) {
         return new Promise<T>((resolve, reject) => {
-            bundle.load(
-                path,
-                (completedCount, totalCount, item) => progressFun?.(completedCount, totalCount, item),
-                (err, asset) => {
-                    if (err) {
-                        app.log.err(`从分包加载资源${path}失败`, err);
-                        reject(err);
-                    } else {
-                        resolve(asset as T);
-                    }
+            bundle.load(path, (completedCount, totalCount, item) => progressFun?.(completedCount, totalCount, item), (err, asset) => {
+                if (err) {
+                    app.log.err(`从分包加载资源${path}失败`, err);
+                    reject(err);
+                } else {
+                    resolve(asset as T);
                 }
-            );
+            });
         });
     }
 
@@ -61,10 +50,7 @@ export class ResMgr {
      * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    async loadResDir(
-        resPath: string,
-        progressFun?: (completedCount: number, totalCount: number, item: any) => void
-    ) {
+    async loadResDir(resPath: string, progressFun?: (completedCount: number, totalCount: number, item: any) => void) {
         try {
             const { bundleName, path } = Parser.path(resPath);
             const bundle = await app.bundle.getBundle(bundleName);
@@ -81,24 +67,16 @@ export class ResMgr {
      * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    private loadAssetDir(
-        bundle: AssetManager.Bundle,
-        path: string,
-        progressFun: (completedCount: number, totalCount: number, item: any) => void
-    ) {
+    private loadAssetDir(bundle: AssetManager.Bundle, path: string, progressFun: (completedCount: number, totalCount: number, item: any) => void) {
         return new Promise<Asset[]>((resolve, reject) => {
-            bundle.loadDir(
-                path,
-                (completedCount, totalCount, item) => progressFun?.(completedCount, totalCount, item),
-                (err, assets) => {
-                    if (err) {
-                        app.log.err(`从分包加载目录${path}失败`, err);
-                        reject(err);
-                    } else {
-                        resolve(assets);
-                    }
+            bundle.loadDir(path, (completedCount, totalCount, item) => progressFun?.(completedCount, totalCount, item), (err, assets) => {
+                if (err) {
+                    app.log.err(`从分包加载目录${path}失败`, err);
+                    reject(err);
+                } else {
+                    resolve(assets);
                 }
-            );
+            });
         });
     }
 

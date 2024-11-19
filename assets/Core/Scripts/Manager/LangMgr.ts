@@ -1,4 +1,4 @@
-import { Director, director, JsonAsset } from "cc";
+import { assetManager, Director, director, JsonAsset, sys, System } from "cc";
 import { EDITOR } from "cc/env";
 import { FrameEnum } from "../FrameEnum";
 
@@ -21,7 +21,7 @@ export class LangMgr {
     private langData: Record<string, Set<string>> = {};
 
     private async init() {
-        const curLang = app.data.getText("language") || "zh";
+        const curLang = app.data.getText("language") || sys.language || "zh";
         await this.changeLang(curLang);
     }
 
@@ -61,10 +61,14 @@ export class LangMgr {
         if (loadedLanguages.has(langCode)) {
             return;
         }
-        const langAsset = await app.res.loadRes<JsonAsset>(`${bundleName}/Res/Lang/Lable/${langCode}`);
-        this.langData[langCode] = { ...this.langData[langCode], ...langAsset.json };
-        loadedLanguages.add(langCode);
-        this.loadedBundles[bundleName] = loadedLanguages;
+
+        const filePath = `/Res/Lang/Lable/${langCode}`;
+        if (assetManager.bundles.get(bundleName).getInfoWithPath(filePath)) {
+            const langAsset = await app.res.loadRes<JsonAsset>(`${bundleName}` + filePath);
+            this.langData[langCode] = { ...this.langData[langCode], ...langAsset.json };
+            loadedLanguages.add(langCode);
+            this.loadedBundles[bundleName] = loadedLanguages;
+        }
     }
 
     /**

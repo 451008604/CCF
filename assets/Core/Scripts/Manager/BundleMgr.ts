@@ -23,6 +23,9 @@ export class BundleMgr {
             if (onProgress) {
                 await this.loadAssetsWithProgress(loadedBundle, onProgress);
             }
+
+            // 加载多语言配置
+            await app.language.loadLanguageData(nameOrUrl);
             return loadedBundle;
         } catch (error) {
             app.log.err(`分包${nameOrUrl}加载失败`, error);
