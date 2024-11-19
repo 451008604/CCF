@@ -1,34 +1,31 @@
-import { _decorator, Component, instantiate, Layers, Prefab, Vec3 } from 'cc';
+import { _decorator, Component, instantiate, Layers, Node, Prefab, Vec3 } from 'cc';
+import { ComponentBase } from '../Core/Scripts/ComponentBase';
+import { FrameEnumEventMsgID, FrameEnumScene } from '../Core/Scripts/FrameEnum';
 const { ccclass, property } = _decorator;
 
 @ccclass('Main')
-export class Main extends Component {
-
-    protected onLoad(): void {
-        // app.res.loadResDir("Bundles", (completedCount, totalCount, item) => {
-        //     app.log.info("分包加载进度", (completedCount / totalCount).toFixed(2), "%");
-        // }).then((bundle) => {
-        //     if (bundle) {
-        //         app.log.info("分包加载完成", bundle);
-        //     }
-        // });
-    }
+export class Main extends ComponentBase {
 
     async start() {
         app.log.info("进入主场景");
 
+        this.addListen(FrameEnumEventMsgID.SwitchScenePrefab, this.switchScenePrefab);
+        // 展示默认场景
+        app.event.send(FrameEnumEventMsgID.SwitchScenePrefab, FrameEnumScene.GameBundle);
+    }
 
-        // 测试多语言配置
-        await app.language.loadLanguageData("Bundles");
-        const prefab = await app.res.loadRes<Prefab>('Bundles/Node');
-        const newNode = instantiate(prefab);
-        const scale = newNode.getScale(new Vec3());
-        // scale.x = scale.y = scale.z *= 1.5;
-        newNode.setScale(scale);
-        newNode.children.forEach(node => {
-            node.layer = Layers.Enum.UI_2D;
+
+    private lastShowScene: Node | null = null;
+    private switchScenePrefab(sceneName: string) {
+        app.res.loadRes(sceneName).then(scene => {
+            if (scene instanceof Prefab) {
+                // 移除上一个场景
+                this.node.removeChild(this.lastShowScene);
+                // 加载新的场景
+                const sceneNode = instantiate(scene);
+                this.node.addChild(sceneNode);
+                this.lastShowScene = sceneNode;
+            }
         });
-        this.node.addChild(newNode);
-
     }
 }

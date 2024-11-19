@@ -1,6 +1,6 @@
 import { assetManager, Director, director, JsonAsset, sys, System } from "cc";
 import { EDITOR } from "cc/env";
-import { FrameEnum } from "../FrameEnum";
+import { FrameEnumEventMsgID } from "../FrameEnum";
 
 /**
  * 多语言管理器
@@ -47,7 +47,7 @@ export class LangMgr {
             );
 
             app.data.setData("language", langCode);
-            app.event.send(FrameEnum.LangChange);
+            app.event.send(FrameEnumEventMsgID.LangChange);
         }
     }
 

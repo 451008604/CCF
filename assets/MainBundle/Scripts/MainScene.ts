@@ -1,8 +1,9 @@
 import { __private, _decorator, Button, Component, Node, NodeEventType } from 'cc';
+import { FrameEnumEventMsgID, FrameEnumScene } from '../../Core/Scripts/FrameEnum';
 const { ccclass, property } = _decorator;
 
-@ccclass('Game')
-export class Game extends Component {
+@ccclass('MainScene')
+export class MainScene extends Component {
 
     btn: Node = null;
 
@@ -24,6 +25,7 @@ export class Game extends Component {
         }
 
         app.language.changeLang(this.lang);
+        app.event.send(FrameEnumEventMsgID.SwitchScenePrefab, FrameEnumScene.GameBundle);
     }
 
     update(deltaTime: number) {
