@@ -1,20 +1,12 @@
-import { _decorator, Director, director, instantiate, misc, Node, Prefab } from 'cc';
-import { FrameEnumEventMsgID } from '../FrameEnum';
-import { EDITOR } from 'cc/env';
+import { _decorator, assetManager, instantiate, log, Node, Prefab, UITransform, Widget } from 'cc';
 import { LoadingView } from '../Components/LoadingView';
-
+import { PopupViewBase } from '../Components/PopupViewBase';
 
 /**
  * 场景、弹窗管理器
  */
 export class UIMgr {
-    private constructor() {
-        if (!EDITOR) {
-            director.once(Director.EVENT_AFTER_SCENE_LAUNCH, () => {
-                app.event.addListen(FrameEnumEventMsgID.SwitchScenePrefab, this.switchScenePrefab, this);
-            }, this);
-        }
-    };
+    private constructor() { };
     static readonly instance: UIMgr = new UIMgr();
 
     /**游戏根节点 */
@@ -73,20 +65,28 @@ export class UIMgr {
             app.log.warn("场景中未获取到名称为 TopLayer 的节点！！！");
         }
 
+
+        // 将root下的所有`层`节点适配宽高
+        for (const element of this.rootNode.children) {
+            if (element.name.indexOf("Layer") != -1) {
+                const widget = element.addComponent(Widget);
+                widget.isAlignTop = widget.isAlignBottom = widget.isAlignLeft = widget.isAlignRight = true;
+                widget.top = widget.bottom = widget.left = widget.right = 0;
+            }
+        }
+
         // 将资源加载界面置于最顶层
         this.loadingComponent = this.rootNode.getComponentInChildren(LoadingView);
         if (this.loadingComponent) {
             this.rootNode.insertChild(this.loadingComponent.node, -1);
         }
-
-        console.log(this.rootNode.children);
     }
 
     /**
      * 切换展示场景预制体
      * @param scenePath 场景路径
      */
-    private switchScenePrefab(scenePath: string) {
+    switchScene(scenePath: string) {
         app.res.loadRes(scenePath, (progress: number) => {
             // 更新加载进度
             if (this.loadingComponent) {
@@ -94,8 +94,8 @@ export class UIMgr {
                 this.loadingComponent.node.active = true;
                 this.loadingComponent.updateProgress(progress);
             }
-        }).then(newScenePrefab => {
-            if (newScenePrefab instanceof Prefab) {
+        }).then(prefab => {
+            if (prefab instanceof Prefab) {
                 if (this.loadingComponent) {
                     this.loadingComponent.node.active = false;
                 }
@@ -103,7 +103,7 @@ export class UIMgr {
                 this.sceneLayer.removeChild(this.curShowScene);
                 this.curShowScene?.destroy();
                 // 加载新的场景
-                const sceneNode = instantiate(newScenePrefab);
+                const sceneNode = instantiate(prefab);
                 this.sceneLayer.addChild(sceneNode);
                 this.curShowScene = sceneNode;
             }
@@ -113,8 +113,26 @@ export class UIMgr {
     /**
      * 展示弹窗
      */
-    showPop() {
+    async showPopup(viewName: string) {
+        const prefab = await app.res.loadRes(viewName);
+        if (prefab instanceof Prefab) {
+            if (assetManager.bundles.get("MainBundle").getInfoWithPath("/PopupViewBase")) {
+                const viewBase = await app.res.loadRes("MainBundle/PopupViewBase") as Prefab;
+                if (viewBase instanceof Prefab) {
+                    const nodeBase = instantiate(viewBase);
+                    if (this.popupLayer.children.length != 0) {
+                        nodeBase.getChildByName("Background").active = false;
+                    }
+                    nodeBase.addChild(instantiate(prefab));
+                    this.popupLayer.addChild(nodeBase);
+                    return;
+                }
+            }
 
+            this.popupLayer.addChild(instantiate(prefab));
+        }
+
+        console.log(this.popupLayer.children);
     }
 
 }

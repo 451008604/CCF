@@ -3,7 +3,6 @@
  */
 export enum FrameEnumEventMsgID {
     LangChange = 0x100001, // 语言切换
-    SwitchScenePrefab // 切换场景
 };
 
 /**

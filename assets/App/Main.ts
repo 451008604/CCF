@@ -11,6 +11,6 @@ export class Main extends ComponentBase {
 
         app.ui.init(this.node);
         // 展示默认场景
-        app.event.send(FrameEnumEventMsgID.SwitchScenePrefab, FrameEnumScene.MainBundle);
+        app.ui.switchScene(FrameEnumScene.MainBundle);
     }
 }

@@ -25,7 +25,7 @@ export class MainScene extends Component {
         }
 
         app.language.changeLang(this.lang);
-        app.event.send(FrameEnumEventMsgID.SwitchScenePrefab, FrameEnumScene.GameBundle);
+        app.ui.switchScene(FrameEnumScene.GameBundle);
     }
 
     update(deltaTime: number) {

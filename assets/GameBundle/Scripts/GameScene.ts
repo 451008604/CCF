@@ -8,12 +8,16 @@ export class GameScene extends Component {
     btn: Node = null;
 
     start() {
-        this.btn = this.node.getChildByName('Button');
-        this.btn.on(Button.EventType.CLICK, this.onClick, this);
+        this.node.getChildByName('Button').on(Button.EventType.CLICK, this.onClickButton, this);
+        this.node.getChildByName('PopupBtn').on(Button.EventType.CLICK, this.onClickPopupBtn, this);
     }
 
-    private onClick() {
-        app.event.send(FrameEnumEventMsgID.SwitchScenePrefab, FrameEnumScene.MainBundle);
+    private onClickButton() {
+        app.ui.switchScene(FrameEnumScene.MainBundle);
+    }
+
+    private onClickPopupBtn() {
+        app.ui.showPopup("MainBundle/PopupDemo1");
     }
 
     update(deltaTime: number) {

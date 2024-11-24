@@ -3,7 +3,7 @@ import { ComponentBase } from './ComponentBase';
 const { ccclass, property } = _decorator;
 
 /**
- * 资源加载进度条界面
+ * 资源加载进度条视图
  */
 @ccclass('LoadingView')
 export class LoadingView extends ComponentBase {

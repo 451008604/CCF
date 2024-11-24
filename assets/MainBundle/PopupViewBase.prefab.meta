@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "54e186c0-0ea1-438f-a13d-80fd1c3f4fcb",
+  "uuid": "b689a0fb-36c5-4bd6-a9d1-deaa2dffa36c",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "PopupView"
+    "syncNodeName": "PopupViewBase"
   }
 }
