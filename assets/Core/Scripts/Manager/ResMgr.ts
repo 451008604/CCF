@@ -1,4 +1,4 @@
-import { Asset, assetManager, AssetManager, Prefab } from "cc";
+import { Asset, assetManager, AssetManager } from "cc";
 import { Parser } from "../Utils/Parser";
 
 /**
@@ -14,11 +14,11 @@ export class ResMgr {
      * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    async loadRes<T extends Asset>(resPath: string, progressFun?: (completedCount: number, totalCount: number, item: any) => void,) {
+    async loadRes<T extends Asset>(resPath: string, progressFun?: (progress: number) => void,) {
         try {
             const { bundleName, path } = Parser.path(resPath);
-            const bundle = await app.bundle.getBundle(bundleName);
-            return await this.loadAsset<T>(bundle, path, progressFun);
+            const bundle = await app.bundle.getBundle(bundleName, progressFun);
+            return await this.loadAsset<T>(bundle, path);
         } catch (error) {
             app.log.err(`加载资源失败${resPath}`, error);
         }
@@ -28,12 +28,11 @@ export class ResMgr {
      * 加载单个资源的辅助方法
      * @param bundle 资源所属分包
      * @param path 资源路径
-     * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    private loadAsset<T>(bundle: AssetManager.Bundle, path: string, progressFun: (completedCount: number, totalCount: number, item: any) => void,) {
+    private loadAsset<T>(bundle: AssetManager.Bundle, path: string) {
         return new Promise<T>((resolve, reject) => {
-            bundle.load(path, (completedCount, totalCount, item) => progressFun?.(completedCount, totalCount, item), (err, asset) => {
+            bundle.load(path, null, (err, asset) => {
                 if (err) {
                     app.log.err(`从分包加载资源${path}失败`, err);
                     reject(err);
@@ -50,11 +49,11 @@ export class ResMgr {
      * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    async loadResDir(resPath: string, progressFun?: (completedCount: number, totalCount: number, item: any) => void) {
+    async loadResDir(resPath: string, progressFun?: (progress: number) => void) {
         try {
             const { bundleName, path } = Parser.path(resPath);
-            const bundle = await app.bundle.getBundle(bundleName);
-            return await this.loadAssetDir(bundle, path, progressFun);
+            const bundle = await app.bundle.getBundle(bundleName, progressFun);
+            return await this.loadAssetDir(bundle, path);
         } catch (error) {
             app.log.err(`加载资源目录失败${resPath}`, error);
         }
@@ -64,12 +63,11 @@ export class ResMgr {
      * 加载目录下所有资源的辅助方法
      * @param bundle 资源所属分包
      * @param path 目录路径
-     * @param progressFun 进度回调函数
      * @returns 加载完成后的Promise
      */
-    private loadAssetDir(bundle: AssetManager.Bundle, path: string, progressFun: (completedCount: number, totalCount: number, item: any) => void) {
+    private loadAssetDir(bundle: AssetManager.Bundle, path: string) {
         return new Promise<Asset[]>((resolve, reject) => {
-            bundle.loadDir(path, (completedCount, totalCount, item) => progressFun?.(completedCount, totalCount, item), (err, assets) => {
+            bundle.loadDir(path, null, (err, assets) => {
                 if (err) {
                     app.log.err(`从分包加载目录${path}失败`, err);
                     reject(err);

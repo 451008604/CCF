@@ -1,5 +1,5 @@
-import { ComponentBase } from "../ComponentBase";
 import { FrameEnumEventMsgID } from "../FrameEnum";
+import { ComponentBase } from "./ComponentBase";
 
 /**
  * 多语言抽象基类

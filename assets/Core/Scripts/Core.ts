@@ -7,6 +7,7 @@ import { AudioMgr } from './Manager/AudioMgr';
 import { EventMgr } from './Manager/EventMgr';
 import { TimerMgr } from './Manager/TimerMgr';
 import { LangMgr } from './Manager/LangMgr';
+import { UIMgr } from './Manager/UIMgr';
 
 /**
  * Core 类
@@ -37,6 +38,9 @@ export class Core {
 
     /**多语言管理器 */
     language: LangMgr = LangMgr.instance;
+
+    /**场景、弹窗管理器 */
+    ui: UIMgr = UIMgr.instance;
 }
 
 

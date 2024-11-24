@@ -50,7 +50,6 @@ export class BundleMgr {
         });
     }
 
-
     /**
      * 加载分包中的资源并返回加载进度
      * @param loadedBundle 已加载的分包
