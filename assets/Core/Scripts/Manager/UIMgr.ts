@@ -1,6 +1,6 @@
-import { _decorator, assetManager, instantiate, log, Node, Prefab, UITransform, Widget } from 'cc';
+import { _decorator, assetManager, BlockInputEvents, instantiate, Node, Prefab, Widget } from 'cc';
 import { LoadingView } from '../Components/LoadingView';
-import { PopupViewBase } from '../Components/PopupViewBase';
+import { FrameEnumEventMsgID } from '../FrameEnum';
 
 /**
  * 场景、弹窗管理器
@@ -65,7 +65,6 @@ export class UIMgr {
             app.log.warn("场景中未获取到名称为 TopLayer 的节点！！！");
         }
 
-
         // 将root下的所有`层`节点适配宽高
         for (const element of this.rootNode.children) {
             if (element.name.indexOf("Layer") != -1) {
@@ -111,28 +110,33 @@ export class UIMgr {
     }
 
     /**
-     * 展示弹窗
+     * 打开弹窗
+     * @param viewPath 弹窗视图预制体路径
      */
-    async showPopup(viewName: string) {
-        const prefab = await app.res.loadRes(viewName);
-        if (prefab instanceof Prefab) {
-            if (assetManager.bundles.get("MainBundle").getInfoWithPath("/PopupViewBase")) {
-                const viewBase = await app.res.loadRes("MainBundle/PopupViewBase") as Prefab;
-                if (viewBase instanceof Prefab) {
-                    const nodeBase = instantiate(viewBase);
-                    if (this.popupLayer.children.length != 0) {
-                        nodeBase.getChildByName("Background").active = false;
-                    }
-                    nodeBase.addChild(instantiate(prefab));
-                    this.popupLayer.addChild(nodeBase);
-                    return;
+    openPopup(viewPath: string) {
+        app.res.loadRes(viewPath).then((prefab) => {
+            if (prefab instanceof Prefab) {
+                // 防止点击穿透
+                if (!this.popupLayer.getComponent(BlockInputEvents)) {
+                    this.popupLayer.addComponent(BlockInputEvents);
                 }
+                this.popupLayer.addChild(instantiate(prefab));
             }
+        });
+    }
 
-            this.popupLayer.addChild(instantiate(prefab));
+    /**
+     * 关闭弹窗
+     * @param childUuid 弹窗节点uuid
+     */
+    closePopup(childUuid: string) {
+        const node = this.popupLayer.getChildByUuid(childUuid);
+        this.popupLayer.removeChild(node);
+        node?.destroy();
+        // 子节点清空时允许点击穿透
+        if (this.popupLayer.children.length == 0) {
+            this.popupLayer.getComponent(BlockInputEvents)?.destroy();
         }
-
-        console.log(this.popupLayer.children);
     }
 
 }

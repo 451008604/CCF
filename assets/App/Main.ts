@@ -10,7 +10,7 @@ export class Main extends ComponentBase {
         app.log.info("启动游戏！！！");
 
         app.ui.init(this.node);
-        // 展示默认场景
-        app.ui.switchScene(FrameEnumScene.MainBundle);
+        // 展示主场景
+        app.ui.switchScene(FrameEnumScene.GameBundle);
     }
 }

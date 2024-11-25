@@ -1,9 +1,10 @@
-import { _decorator, Button, Component, Node } from 'cc';
-import { FrameEnumEventMsgID, FrameEnumScene } from '../../Core/Scripts/FrameEnum';
+import { _decorator, Button, Node } from 'cc';
+import { FrameEnumScene } from '../../Core/Scripts/FrameEnum';
+import { ComponentBase } from '../../Core/Scripts/Components/ComponentBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameScene')
-export class GameScene extends Component {
+export class GameScene extends ComponentBase {
 
     btn: Node = null;
 
@@ -17,7 +18,12 @@ export class GameScene extends Component {
     }
 
     private onClickPopupBtn() {
-        app.ui.showPopup("MainBundle/PopupDemo1");
+        app.ui.openPopup("MainBundle/PopupDemo1");
+        app.ui.openPopup("MainBundle/PopupDemo1");
+        app.ui.openPopup("MainBundle/PopupDemo1");
+        app.ui.openPopup("MainBundle/PopupDemo1");
+
+        app.log.info(app.ui);
     }
 
     update(deltaTime: number) {

@@ -1,12 +1,14 @@
-import { _decorator, Component, Input, Node } from 'cc';
-import { PopupViewBase } from '../../Core/Scripts/Components/PopupViewBase';
+import { _decorator, Component, EventTouch, input, Input, Node } from 'cc';
+import { ComponentBase } from '../../Core/Scripts/Components/ComponentBase';
+import { FrameEnumEventMsgID } from '../../Core/Scripts/FrameEnum';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupDemo1')
-export class PopupDemo1 extends PopupViewBase {
+export class PopupDemo1 extends ComponentBase {
+
     start() {
-        this.node.on(Input.EventType.TOUCH_END, (event) => {
-            console.log(event, 111);
+        this.node.getChildByName("CloseBtn").once(Input.EventType.TOUCH_END, () => {
+            app.ui.closePopup(this.node.uuid);
         }, this);
     }
 
@@ -14,4 +16,3 @@ export class PopupDemo1 extends PopupViewBase {
 
     }
 }
-

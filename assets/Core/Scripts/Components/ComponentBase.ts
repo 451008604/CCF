@@ -1,5 +1,8 @@
-import { Component, NodeEventType } from "cc";
+import { Component, Node, NodeEventType } from "cc";
 
+/**
+ * 组件基类。用于替代`cc.Component`
+ */
 export abstract class ComponentBase extends Component {
 
     /**

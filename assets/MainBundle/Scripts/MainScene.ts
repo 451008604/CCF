@@ -1,9 +1,10 @@
-import { __private, _decorator, Button, Component, Node, NodeEventType } from 'cc';
-import { FrameEnumEventMsgID, FrameEnumScene } from '../../Core/Scripts/FrameEnum';
+import { __private, _decorator, Button, Node } from 'cc';
+import { FrameEnumScene } from '../../Core/Scripts/FrameEnum';
+import { ComponentBase } from '../../Core/Scripts/Components/ComponentBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainScene')
-export class MainScene extends Component {
+export class MainScene extends ComponentBase {
 
     btn: Node = null;
 
