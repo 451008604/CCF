@@ -8,6 +8,7 @@ import { EventMgr } from './Manager/EventMgr';
 import { TimerMgr } from './Manager/TimerMgr';
 import { LangMgr } from './Manager/LangMgr';
 import { UIMgr } from './Manager/UIMgr';
+import { NetWorkMgr } from './Manager/NetWorkMgr';
 
 /**
  * Core 类
@@ -41,6 +42,9 @@ export class Core {
 
     /**场景、弹窗管理器 */
     ui: UIMgr = UIMgr.instance;
+
+    /**网络管理器 */
+    network: NetWorkMgr = NetWorkMgr.instance;
 }
 
 

@@ -22,4 +22,6 @@ export default async function (call: ApiCall<ReqLogin, ResLogin>) {
         roomId = new Date().getTime().toString();
     }
     hall.joinRoom(roomId, call.req.userInfo, call.conn.id);
+
+    call.succ({});
 }

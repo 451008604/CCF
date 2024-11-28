@@ -2,8 +2,14 @@
  * 框架保留常量
  */
 export enum FrameEnumEventMsgID {
-    /**语言切换 */
+    /**
+     * 语言切换
+     */
     LangChange = 0x100001,
+    /**
+     * 网络通知
+     */
+    NetWorkNotify
 };
 
 /**

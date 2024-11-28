@@ -21,13 +21,6 @@ export var DataManager: {
     roomModel: IRoomModel;
     selfModel: IUserModel;
 } = {
-    roomModel: {
-        Users: [],
-    },
-    selfModel: {
-        ConnId: "",
-        Token: "",
-        UserName: "",
-        OtherData: ""
-    }
+    roomModel: Object.create({}),
+    selfModel: Object.create({})
 };

@@ -1,6 +1,7 @@
-import { _decorator, Component, director, find, instantiate, Layers, Node, Prefab, Vec3 } from 'cc';
-import { FrameEnumEventMsgID, FrameEnumScene } from '../Core/Scripts/FrameEnum';
+import { _decorator } from 'cc';
+import { FrameEnumScene } from '../Core/Scripts/FrameEnum';
 import { ComponentBase } from '../Core/Scripts/Components/ComponentBase';
+import { ApiLoginReq } from '../NetWork/Login';
 const { ccclass, property } = _decorator;
 
 @ccclass('Main')
@@ -12,5 +13,8 @@ export class Main extends ComponentBase {
         app.ui.init(this.node);
         // 展示主场景
         app.ui.switchScene(FrameEnumScene.GameBundle);
+
+
+        app.network.onConnected(ApiLoginReq);
     }
 }

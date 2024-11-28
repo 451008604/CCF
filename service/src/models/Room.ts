@@ -1,6 +1,5 @@
 import { IRoomModel, IUserModel, DataManager } from "../shared/global/data";
 import { server } from "..";
-import { MsgAttack } from "../shared/protocols/MsgAttack";
 import { hall } from "./Hall";
 
 export class Room {
@@ -85,18 +84,4 @@ export class Room {
         return room;
     }
 
-    // 广播攻击事件
-    broadcastAttack(currentUser: IUserModel) {
-        let result: MsgAttack = {
-            attackUser: currentUser,
-            targetUser: { ...DataManager.selfModel },
-        };
-        this.users.forEach(element => {
-            if (element.Token != currentUser.Token) {
-                result.targetUser = element;
-            }
-        });
-
-        server.broadcastMsg("Attack", result, hall.getUserToConn(this.getUsersList()));
-    }
 }

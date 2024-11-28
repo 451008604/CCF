@@ -10,11 +10,11 @@ export const server = new WsServer(serviceProto, {
     // Remove this to use binary mode (remove from the client too)
     json: true,
     heartbeatWaitTime: 15000,
-    wss: {
-        cert: readFileSync(""),
-        key: readFileSync("")
-
-    }
+    // wss: {
+    // cert: readFileSync(""),
+    // key: readFileSync("")
+    // }
+    logConnect: true
 });
 
 server.flows.postDisconnectFlow.push(v => {
