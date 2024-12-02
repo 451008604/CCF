@@ -2,8 +2,10 @@
   "ver": "1.2.0",
   "importer": "directory",
   "imported": true,
-  "uuid": "b024e781-e9d1-4471-83d6-32e095ae215b",
+  "uuid": "ba627cb9-0a8a-4e23-9c78-82bafd8cdd78",
   "files": [],
   "subMetas": {},
-  "userData": {}
+  "userData": {
+    "isBundle": true
+  }
 }

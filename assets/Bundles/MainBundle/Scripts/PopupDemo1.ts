@@ -1,6 +1,5 @@
-import { _decorator, Component, EventTouch, input, Input, Node } from 'cc';
-import { ComponentBase } from '../../Core/Scripts/Components/ComponentBase';
-import { FrameEnumEventMsgID } from '../../Core/Scripts/FrameEnum';
+import { _decorator, Input } from 'cc';
+import { ComponentBase } from '../../../Core/Scripts/Components/ComponentBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupDemo1')

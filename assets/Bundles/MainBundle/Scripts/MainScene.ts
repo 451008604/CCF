@@ -1,6 +1,6 @@
 import { __private, _decorator, Button, Node } from 'cc';
-import { FrameEnumScene } from '../../Core/Scripts/FrameEnum';
-import { ComponentBase } from '../../Core/Scripts/Components/ComponentBase';
+import { ComponentBase } from '../../../Core/Scripts/Components/ComponentBase';
+import { ResPaths } from '../../ResPaths';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainScene')
@@ -26,7 +26,7 @@ export class MainScene extends ComponentBase {
         }
 
         app.language.changeLang(this.lang);
-        app.ui.switchScene(FrameEnumScene.GameBundle);
+        app.ui.switchScene(ResPaths.GameBundle.GameScene);
     }
 
     update(deltaTime: number) {

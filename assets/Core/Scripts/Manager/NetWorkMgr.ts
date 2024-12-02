@@ -49,6 +49,7 @@ export class NetWorkMgr {
             return res;
         });
 
+        // 对所有的服务器通知挂载监听
         serviceProto.services.forEach((value) => {
             if (value.type == 'msg') {
                 this._client.listenMsg(RegExp(value.name), res => { app.event.send(FrameEnumEventMsgID.NetWorkNotify, value.name, res); });

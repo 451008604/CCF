@@ -1,7 +1,8 @@
 import { _decorator, Button, log, Node } from 'cc';
-import { FrameEnumEventMsgID, FrameEnumScene } from '../../Core/Scripts/FrameEnum';
-import { ComponentBase } from '../../Core/Scripts/Components/ComponentBase';
-import { ServiceType } from '../../NetWork/shared/protocols/serviceProto';
+import { ComponentBase } from '../../../Core/Scripts/Components/ComponentBase';
+import { ServiceType } from '../../../NetWork/shared/protocols/serviceProto';
+import { FrameEnumEventMsgID } from '../../../Core/Scripts/FrameEnum';
+import { ResPaths } from '../../ResPaths';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameScene')
@@ -23,11 +24,11 @@ export class GameScene extends ComponentBase {
     }
 
     private onClickButton() {
-        app.ui.switchScene(FrameEnumScene.MainBundle);
+        app.ui.switchScene(ResPaths.MainBundle.MainScene);
     }
 
     private onClickPopupBtn() {
-        app.ui.openPopup("MainBundle/PopupDemo1");
+        app.ui.openPopup(ResPaths.MainBundle.PopupDemo1);
 
         app.log.info(app.ui);
     }
