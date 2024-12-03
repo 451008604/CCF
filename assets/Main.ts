@@ -12,7 +12,7 @@ export class Main extends ComponentBase {
 
         app.ui.init(this.node);
         // 展示主场景
-        app.ui.switchScene(ResPaths.GameBundle.GameScene);
+        app.ui.switchScene(ResPaths.GameBundle.GameScenePrefab);
 
         app.network.onConnected(ApiLoginReq);
     }

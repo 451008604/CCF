@@ -1,4 +1,6 @@
 import { Component, Node, NodeEventType } from "cc";
+import { FrameEnumEventMsgID } from "../FrameEnum";
+import { ServiceType } from "../../../NetWork/shared/protocols/serviceProto";
 
 /**
  * 组件基类。用于替代`cc.Component`
@@ -12,14 +14,24 @@ export abstract class ComponentBase extends Component {
     protected onLoad() {
         // 监听节点销毁时，自动清理挂载的自定义监听
         this.node.once(NodeEventType.NODE_DESTROYED, this.destroyAfterHandler, this);
+        this.addListen(FrameEnumEventMsgID.NetWorkNotify, this.netWorkHandler);
 
         this.onLoadAfter();
     }
 
     /**
+     * 服务消息通知处理
+     * @param msgId 消息ID
+     * @param msgBody 消息Body
+     */
+    protected netWorkHandler(msgId: keyof ServiceType['msg'], msgBody: ServiceType['msg']): void {
+    }
+
+    /**
      * 执行组件初始化操作，等效于`onLoad()`
      */
-    protected onLoadAfter() { };
+    protected onLoadAfter() {
+    }
 
     // 挂载的监听事件
     private listenList = [];

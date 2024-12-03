@@ -27,11 +27,8 @@ export class NetWorkMgr {
             heartbeat: { interval: 5000, timeout: 5000 }
         });
         var res = await this._client.connect();
-        if (res.isSucc) {
-            app.log.info("服务连接成功");
-        } else {
-            app.log.err("服务连接失败", res.errMsg);
-        }
+        res.isSucc ? app.log.info("服务连接成功") : app.log.err("服务连接失败", res.errMsg);
+        if (!res.isSucc) return;
 
         // 响应错误拦截器
         this._client.flows.preApiReturnFlow.push(res => {
@@ -56,11 +53,12 @@ export class NetWorkMgr {
             }
         });
 
-        // 执行连接成功时的钩子函数
-        this._onConnected(this._client);
+
+        this._onConnected ?? this._onConnected(this._client);
         return this._client;
     }
 
+    // 连接成功时的钩子函数
     onConnected(callBack: (client: WsClient<ServiceType>) => void) {
         this._onConnected = callBack;
     }

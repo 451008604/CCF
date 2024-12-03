@@ -26,7 +26,7 @@ export class MainScene extends ComponentBase {
         }
 
         app.language.changeLang(this.lang);
-        app.ui.switchScene(ResPaths.GameBundle.GameScene);
+        app.ui.switchScene(ResPaths.GameBundle.GameScenePrefab);
     }
 
     update(deltaTime: number) {
