@@ -15,5 +15,10 @@ export class Main extends ComponentBase {
         app.ui.switchScene(ResPaths.GameBundle.GameScenePrefab);
 
         app.network.onConnected(ApiLoginReq);
+
+
+        app.ui.showTips("测试测试测试测试", { duration: 10 });
+        app.ui.showTips("测试测试测试测试", { gravity: "TOP", duration: 1 });
+        app.ui.showTips("测试测试测试测试", { gravity: "BOTTOM", duration: 1 });
     }
 }
