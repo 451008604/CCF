@@ -39,11 +39,10 @@ function createEnum(filePaths, rootDir) {
 
     filePaths.forEach(filePath => {
         const relativePath = path.relative(rootDir, filePath).replaceAll("\\", "/");
+        const dirname = relativePath.split("/")[0];
         const camelCaseName = toCamelCase(path.basename(filePath)).replaceAll(".", "");
-        if (!enumObj[relativePath.split("/")[0]]) {
-            enumObj[relativePath.split("/")[0]] = {};
-        }
-        enumObj[relativePath.split("/")[0]][camelCaseName] = relativePath;
+        enumObj[dirname] || (enumObj[dirname] = {});
+        enumObj[dirname][camelCaseName] = relativePath;
     });
 
     return enumObj;
@@ -51,7 +50,7 @@ function createEnum(filePaths, rootDir) {
 
 // 资源的根目录
 const rootDir = './assets/Bundles';
-// 需要查找的文件类型
+// 排除的文件类型
 const fileTypes = ['.ts', '.js', '.meta'];
 
 const filePaths = findFiles(rootDir, fileTypes);
