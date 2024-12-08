@@ -16,7 +16,8 @@ function findFiles(dir, fileTypes) {
             results = results.concat(findFiles(filePath, fileTypes));
         } else {
             // 检查文件类型
-            if (!fileTypes.includes(path.extname(file))) {
+            if (!fileTypes.includes(file) && !fileTypes.includes(path.extname(file))) {
+                console.log(fileTypes.includes(file), filePath, file);
                 results.push(filePath);
             }
         }
@@ -52,7 +53,7 @@ function createEnum(filePaths, rootDir) {
 // 资源的根目录
 const rootDir = './assets/Bundles';
 // 需要查找的文件类型
-const fileTypes = ['.ts', '.js', '.meta'];
+const fileTypes = ['.ts', '.js', '.meta', '.DS_Store'];
 
 const filePaths = findFiles(rootDir, fileTypes);
 const enumResult = createEnum(filePaths, rootDir);

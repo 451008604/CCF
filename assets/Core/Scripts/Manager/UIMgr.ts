@@ -86,7 +86,7 @@ export class UIMgr {
      * @param scenePath 场景路径
      */
     switchScene(scenePath: string) {
-        app.res.loadRes(scenePath, (progress: number) => {
+        app.res.loadRes<Prefab>(scenePath, (progress: number) => {
             // 更新加载进度
             if (this.loadingComponent) {
                 this.rootNode.insertChild(this.loadingComponent.node, -1);
@@ -94,18 +94,16 @@ export class UIMgr {
                 this.loadingComponent.updateProgress(progress);
             }
         }).then(prefab => {
-            if (prefab instanceof Prefab) {
-                if (this.loadingComponent) {
-                    this.loadingComponent.node.active = false;
-                }
-                // 移除上一个场景
-                this.sceneLayer.removeChild(this.curShowScene);
-                this.curShowScene?.destroy();
-                // 加载新的场景
-                const sceneNode = instantiate(prefab);
-                this.sceneLayer.addChild(sceneNode);
-                this.curShowScene = sceneNode;
+            if (this.loadingComponent) {
+                this.loadingComponent.node.active = false;
             }
+            // 移除上一个场景
+            this.sceneLayer.removeChild(this.curShowScene);
+            this.curShowScene?.destroy();
+            // 加载新的场景
+            const sceneNode = instantiate(prefab);
+            this.sceneLayer.addChild(sceneNode);
+            this.curShowScene = sceneNode;
         });
     }
 
@@ -114,14 +112,12 @@ export class UIMgr {
      * @param viewPath 弹窗视图预制体路径
      */
     openPopup(viewPath: string) {
-        app.res.loadRes(viewPath).then((prefab) => {
-            if (prefab instanceof Prefab) {
-                // 防止点击穿透
-                if (!this.popupLayer.getComponent(BlockInputEvents)) {
-                    this.popupLayer.addComponent(BlockInputEvents);
-                }
-                this.popupLayer.addChild(instantiate(prefab));
+        app.res.loadRes<Prefab>(viewPath).then((prefab) => {
+            // 防止点击穿透
+            if (!this.popupLayer.getComponent(BlockInputEvents)) {
+                this.popupLayer.addComponent(BlockInputEvents);
             }
+            this.popupLayer.addChild(instantiate(prefab));
         });
     }
 
