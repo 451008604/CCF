@@ -7,6 +7,7 @@ export const ResPaths = {
 
 	GameBundle: {
 		ChessBoardPrefab: "GameBundle/ChessBoard",
+		ChessContainerPrefab: "GameBundle/ChessContainer",
 		GameScenePrefab: "GameBundle/GameScene",
 		B_boxPng: "GameBundle/Res/Chess/b_box.png",
 		B_cPng: "GameBundle/Res/Chess/b_c.png",

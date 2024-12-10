@@ -17,7 +17,6 @@ function findFiles(dir, fileTypes) {
         } else {
             // 检查文件类型
             if (!fileTypes.includes(file) && !fileTypes.includes(path.extname(file))) {
-                console.log(fileTypes.includes(file), filePath, file);
                 results.push(filePath);
             }
         }
