@@ -2,23 +2,21 @@ import { _decorator } from 'cc';
 import { ComponentBase } from './Core/Scripts/Components/ComponentBase';
 import { ApiLoginReq } from './NetWork/Login';
 import { ResPaths } from './Bundles/ResPaths';
+import { FrameEnumTipsPosition } from './Core/Scripts/FrameEnum';
 const { ccclass, property } = _decorator;
 
 @ccclass('Main')
 export class Main extends ComponentBase {
 
-    async start() {
+    protected onLoadAfter(): void {
         app.log.info("启动游戏！！！");
-
         app.ui.init(this.node);
+
         // 展示主场景
         app.ui.switchScene(ResPaths.GameBundle.GameScenePrefab);
 
         app.network.onConnected(ApiLoginReq);
 
-
-        app.ui.showTips("测试测试测试测试", { duration: 10 });
-        app.ui.showTips("测试测试测试测试", { gravity: "TOP", duration: 1 });
-        app.ui.showTips("测试测试测试测试", { gravity: "BOTTOM", duration: 1 });
     }
+
 }

@@ -6,7 +6,25 @@
 export const ResPaths = {
 
 	GameBundle: {
+		ChessBoardPrefab: "GameBundle/ChessBoard",
 		GameScenePrefab: "GameBundle/GameScene",
+		B_boxPng: "GameBundle/Res/Chess/b_box.png",
+		B_cPng: "GameBundle/Res/Chess/b_c.png",
+		B_jPng: "GameBundle/Res/Chess/b_j.png",
+		B_mPng: "GameBundle/Res/Chess/b_m.png",
+		B_pPng: "GameBundle/Res/Chess/b_p.png",
+		B_sPng: "GameBundle/Res/Chess/b_s.png",
+		B_xPng: "GameBundle/Res/Chess/b_x.png",
+		B_zPng: "GameBundle/Res/Chess/b_z.png",
+		ChessboardPng: "GameBundle/Res/Chess/chessboard.png",
+		R_boxPng: "GameBundle/Res/Chess/r_box.png",
+		R_cPng: "GameBundle/Res/Chess/r_c.png",
+		R_jPng: "GameBundle/Res/Chess/r_j.png",
+		R_mPng: "GameBundle/Res/Chess/r_m.png",
+		R_pPng: "GameBundle/Res/Chess/r_p.png",
+		R_sPng: "GameBundle/Res/Chess/r_s.png",
+		R_xPng: "GameBundle/Res/Chess/r_x.png",
+		R_zPng: "GameBundle/Res/Chess/r_z.png",
 	},
 
 	LoadingBundle: {
