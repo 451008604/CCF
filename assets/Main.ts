@@ -2,7 +2,6 @@ import { _decorator } from 'cc';
 import { ComponentBase } from './Core/Scripts/Components/ComponentBase';
 import { ApiLoginReq } from './NetWork/Login';
 import { ResPaths } from './Bundles/ResPaths';
-import { FrameEnumTipsPosition } from './Core/Scripts/FrameEnum';
 const { ccclass, property } = _decorator;
 
 @ccclass('Main')
