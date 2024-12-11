@@ -84,9 +84,7 @@ export class Crypt {
      * @returns 随机生成的 IV
      */
     private static generateRandomIV(): CryptoES.lib.WordArray {
-        const iv = new Uint8Array(16);
-        crypto.getRandomValues(iv);
-        return CryptoES.lib.WordArray.create(iv);
+        return CryptoES.lib.WordArray.random(16);
     }
 
     /**
