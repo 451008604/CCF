@@ -13,6 +13,8 @@ export class GameScene extends ComponentBase {
     async start() {
         this.node.getChildByName('Button').on(Button.EventType.CLICK, this.onClickButton, this);
         this.node.getChildByName('PopupBtn').on(Button.EventType.CLICK, this.onClickPopupBtn, this);
+
+        app.ui.showTips('Hello World!');
     }
 
     private onClickButton() {

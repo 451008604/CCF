@@ -1,4 +1,4 @@
-import { _decorator } from 'cc';
+import { _decorator, log } from 'cc';
 import { ComponentBase } from './Core/Scripts/Components/ComponentBase';
 import { ApiLoginReq } from './NetWork/Login';
 import { ResPaths } from './Bundles/ResPaths';
