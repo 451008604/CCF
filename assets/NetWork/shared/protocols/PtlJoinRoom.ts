@@ -1,12 +1,13 @@
 import { UserModel } from "../global/data";
 import { BaseRequest, BaseResponse, BaseConf } from "./base";
 
-export interface ReqLogin extends BaseRequest {
+export interface ReqJoinRoom extends BaseRequest {
+    roomId: string;
     userInfo: UserModel;
 }
 
-export interface ResLogin extends BaseResponse {
-    userInfo: UserModel;
+export interface ResJoinRoom extends BaseResponse {
+
 }
 
 export const conf: BaseConf = {

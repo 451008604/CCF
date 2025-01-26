@@ -11,7 +11,7 @@ export class MainScene extends ComponentBase {
     lang: string = "";
 
     start() {
-        this.lang = app.data.getText("language");
+        this.lang = app.storage.getText("language");
         this.btn = this.node.getChildByName('Button');
         if (this.btn) {
             this.btn.on(Button.EventType.CLICK, this.onButtonClick, this);

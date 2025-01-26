@@ -21,7 +21,7 @@ export class LangMgr {
     private langData: Record<string, Set<string>> = {};
 
     private async init() {
-        const curLang = app.data.getText("language") || sys.language || "zh";
+        const curLang = app.storage.getText("language") || sys.language || "zh";
         await this.changeLang(curLang);
     }
 
@@ -46,7 +46,7 @@ export class LangMgr {
                 })
             );
 
-            app.data.setData("language", langCode);
+            app.storage.setData("language", langCode);
             app.event.send(FrameEnumEventMsgID.LangChange);
         }
     }

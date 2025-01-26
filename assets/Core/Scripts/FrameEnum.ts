@@ -5,7 +5,9 @@ export enum FrameEnumEventMsgID {
     /**语言切换 */
     LangChange = 0x100001,
     /**接收到的服务器通知 */
-    NetWorkNotify
+    NetWorkNotify,
+    /**用户数据变化 */
+    UserDataChange
 };
 
 /**

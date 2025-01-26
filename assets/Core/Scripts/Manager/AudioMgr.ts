@@ -29,8 +29,8 @@ export class AudioMgr {
 
 
     init() {
-        this.musicVolume = app.data.getNumber("musicVolume") ?? 0.5;
-        this.effectVolume = app.data.getNumber("effectVolume") ?? 0.5;
+        this.musicVolume = app.storage.getNumber("musicVolume") || 0.5;
+        this.effectVolume = app.storage.getNumber("effectVolume") || 0.5;
 
         const audioMgrNode = new Node("__AudioMgr__");
         director.getScene().addChild(audioMgrNode);
@@ -48,7 +48,7 @@ export class AudioMgr {
      * @param musicVolume 音量
      * @returns 音频源组件
      */
-    createAudioSource(audioMgrNode: Node, musicVolume: number) {
+    private createAudioSource(audioMgrNode: Node, musicVolume: number) {
         const source = audioMgrNode.addComponent(AudioSource);
         source.loop = false;
         source.playOnAwake = false;
@@ -58,12 +58,11 @@ export class AudioMgr {
 
     /**
      * 播放音乐
-     * @param path 音乐路径
+     * @param clip 音频资源
      * @param loop 是否循环播放，默认为：true
      * @param volume 音量大小，默认为：1.0
      */
-    async playMusic(path: string, loop: boolean = true, volume: number = 1.0) {
-        const clip = await app.res.loadRes<AudioClip>(path);
+    async playMusic(clip: AudioClip, loop: boolean = true, volume: number = 1.0) {
         this.musicSource.stop();
         this.musicSource.clip = clip;
         this.musicSource.loop = loop;
@@ -109,7 +108,7 @@ export class AudioMgr {
      * 获取下一个音效组件
      * @returns 下一个音效组件
      */
-    getNextEffectSource() {
+    private getNextEffectSource() {
         const source = this.effectSourcePool[this.effectSourceIndex];
         this.effectSourceIndex = (this.effectSourceIndex + 1) % this.effectSourcePool.length;
         return source;
@@ -122,7 +121,7 @@ export class AudioMgr {
     setMusicVolume(volume: number) {
         this.musicVolume = volume;
         this.musicSource.volume = volume;
-        app.data.setData("musicVolume", volume);
+        app.storage.setData("musicVolume", volume);
     }
 
     /**
@@ -140,7 +139,7 @@ export class AudioMgr {
     setEffectVolume(volume: number) {
         this.effectVolume = volume;
         this.effectSourcePool.forEach((source) => { source.volume = volume; });
-        app.data.setData("effectVolume", volume);
+        app.storage.setData("effectVolume", volume);
     }
 
     /**

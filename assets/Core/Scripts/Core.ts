@@ -1,21 +1,21 @@
-import { _decorator } from 'cc';
-import { LogMgr } from './Manager/LogMgr';
-import { BundleMgr } from './Manager/BundleMgr';
-import { DataMgr } from './Manager/DataMgr';
-import { ResMgr } from './Manager/ResMgr';
-import { AudioMgr } from './Manager/AudioMgr';
-import { EventMgr } from './Manager/EventMgr';
-import { TimerMgr } from './Manager/TimerMgr';
-import { LangMgr } from './Manager/LangMgr';
-import { UIMgr } from './Manager/UIMgr';
-import { NetWorkMgr } from './Manager/NetWorkMgr';
-
+import { _decorator } from "cc";
+import { LogMgr } from "./Manager/LogMgr";
+import { BundleMgr } from "./Manager/BundleMgr";
+import { StorageMgr } from "./Manager/StorageMgr";
+import { ResMgr } from "./Manager/ResMgr";
+import { AudioMgr } from "./Manager/AudioMgr";
+import { EventMgr } from "./Manager/EventMgr";
+import { TimerMgr } from "./Manager/TimerMgr";
+import { LangMgr } from "./Manager/LangMgr";
+import { UIMgr } from "./Manager/UIMgr";
+import { NetWorkMgr } from "./Manager/NetWorkMgr";
+import { MiniSdk } from "./Utils/MiniSdk";
+import { Config } from "./Utils/Config";
 /**
  * Core 类
  * 负责映射导出框架接口
  */
 export class Core {
-
     /** 日志管理器 */
     log: LogMgr = LogMgr.instance;
 
@@ -23,7 +23,7 @@ export class Core {
     bundle: BundleMgr = BundleMgr.instance;
 
     /**数据管理器 */
-    data: DataMgr = DataMgr.instance;
+    storage: StorageMgr = StorageMgr.instance;
 
     /**资源管理器 */
     res: ResMgr = ResMgr.instance;
@@ -45,8 +45,13 @@ export class Core {
 
     /**网络管理器 */
     network: NetWorkMgr = NetWorkMgr.instance;
-}
 
+    /**小游戏SDK */
+    miniSdk: MiniSdk = MiniSdk.instance;
+
+    /**配置管理器 */
+    config: Config = Config.instance;
+}
 
 /** 全局 Window 接口 */
 declare global {

@@ -1,5 +1,5 @@
-import { IRoomModel } from "../global/data";
+import { RoomModel } from "../global/data";
 
 export interface MsgRoomUpdate {
-    roomInfo: IRoomModel;
+    roomInfo: RoomModel;
 }

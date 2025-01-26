@@ -24,7 +24,7 @@ export abstract class ComponentBase extends Component {
      * @param msgId 消息ID
      * @param msgBody 消息Body
      */
-    protected netWorkHandler(msgId: keyof ServiceType['msg'], msgBody: ServiceType['msg']): void {
+    protected netWorkHandler(msgId: keyof ServiceType['msg'], msgBody: ServiceType['msg'][keyof ServiceType['msg']]): void {
     }
 
     /**

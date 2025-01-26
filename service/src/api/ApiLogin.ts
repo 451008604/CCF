@@ -1,27 +1,13 @@
 import { ApiCall } from "tsrpc";
-import { hall } from "../models/Hall";
 import { ReqLogin, ResLogin } from "../shared/protocols/PtlLogin";
-import { server } from "..";
+import { redis } from "../database/redis";
+import { UserModel } from "../shared/global/data";
 
 export default async function (call: ApiCall<ReqLogin, ResLogin>) {
-    let info = hall.userRoomByConnId(call.conn.id);
-    if (info) {
-        // 已在房间内时，直接返回房间信息
-        let roomData = info.room.getRoomData();
-        server.broadcastMsg("RoomUpdate", { roomInfo: roomData }, hall.getUserToConn(roomData.Users));
-        return;
-    }
+    // 查询玩家数据
+    const client = await redis.client();
+    const redisData = await client.get(call.req.userInfo.token);
+    const playerData = (redisData ? JSON.parse(redisData) : {}) as UserModel;
 
-    let bookID = 0;
-    if (call.req.userInfo.OtherData != "") {
-        bookID = JSON.parse(call.req.userInfo.OtherData)?.["bookID"];
-    }
-    let roomId = hall.getWaitingRoom(bookID ? bookID : 0);
-    if (roomId == "") {
-        // 没有等待加入的房间时新创建一个房间
-        roomId = new Date().getTime().toString();
-    }
-    hall.joinRoom(roomId, call.req.userInfo, call.conn.id);
-
-    call.succ({});
+    call.succ({ userInfo: playerData });
 }

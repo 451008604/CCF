@@ -7,7 +7,7 @@ export class PopupDemo1 extends ComponentBase {
 
     start() {
         this.node.getChildByName("CloseBtn").once(Input.EventType.TOUCH_END, () => {
-            app.ui.closePopup(this.node.uuid);
+            app.ui.openPanel(this.node.uuid);
         }, this);
     }
 

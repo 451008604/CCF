@@ -1,5 +1,5 @@
-import { _decorator, BlockInputEvents, Canvas, color, director, Graphics, instantiate, Label, Node, Prefab, tween, UIOpacity, UITransform, v3, Widget } from 'cc';
-import { LoadingView } from '../Components/LoadingView';
+import { _decorator, BlockInputEvents, Canvas, color, director, Graphics, instantiate, Label, Node, Prefab, Sprite, SpriteFrame, tween, UIOpacity, UITransform, v3, view, Widget } from 'cc';
+import { LoadingPanel } from '../Components/LoadingPanel';
 import { FrameEnumTipsPosition } from '../FrameEnum';
 
 /**
@@ -18,16 +18,18 @@ export class UIMgr {
         return this._rootNode;
     }
     /**资源加载loading界面 */
-    private loadingComponent: LoadingView = null;
+    private loadingComponent: LoadingPanel = null;
     /**当前展示的场景 */
     private curShowScene: Node = null;
 
+    /**背景层 */
+    private background: Node = null;
     /**场景层 */
     private sceneLayer: Node = null;
     /**菜单层 */
     private menuLayer: Node = null;
     /**弹出层 */
-    private popupLayer: Node = null;
+    private panelLayer: Node = null;
     /**提示层 */
     private tipsLayer: Node = null;
     /**顶层 */
@@ -44,25 +46,29 @@ export class UIMgr {
         }
         this._rootNode = _rNode;
 
+        this.background = this.rootNode.getChildByName("Background");
+        if (!this.background) {
+            app.log.err("场景中未获取到名称为 Background 的节点！！！");
+        }
         this.sceneLayer = this.rootNode.getChildByName("SceneLayer");
         if (!this.sceneLayer) {
-            app.log.warn("场景中未获取到名称为 SceneLayer 的节点！！！");
+            app.log.err("场景中未获取到名称为 SceneLayer 的节点！！！");
         }
         this.menuLayer = this.rootNode.getChildByName("MenuLayer");
         if (!this.menuLayer) {
-            app.log.warn("场景中未获取到名称为 MenuLayer 的节点！！！");
+            app.log.err("场景中未获取到名称为 MenuLayer 的节点！！！");
         }
-        this.popupLayer = this.rootNode.getChildByName("PopupLayer");
-        if (!this.popupLayer) {
-            app.log.warn("场景中未获取到名称为 PopupLayer 的节点！！！");
+        this.panelLayer = this.rootNode.getChildByName("PanelLayer");
+        if (!this.panelLayer) {
+            app.log.err("场景中未获取到名称为 PanelLayer 的节点！！！");
         }
         this.tipsLayer = this.rootNode.getChildByName("TipsLayer");
         if (!this.tipsLayer) {
-            app.log.warn("场景中未获取到名称为 TipsLayer 的节点！！！");
+            app.log.err("场景中未获取到名称为 TipsLayer 的节点！！！");
         }
         this.topLayer = this.rootNode.getChildByName("TopLayer");
         if (!this.topLayer) {
-            app.log.warn("场景中未获取到名称为 TopLayer 的节点！！！");
+            app.log.err("场景中未获取到名称为 TopLayer 的节点！！！");
         }
 
         // 将root下的所有`层`节点适配宽高
@@ -75,10 +81,34 @@ export class UIMgr {
         }
 
         // 将资源加载界面置于最顶层
-        this.loadingComponent = this.rootNode.getComponentInChildren(LoadingView);
-        if (this.loadingComponent) {
-            this.rootNode.insertChild(this.loadingComponent.node, -1);
-        }
+        this.loadingComponent = this.rootNode.getComponentInChildren(LoadingPanel);
+
+        // 适配背景图
+        this.adaptBackgroundToScreen(this.background);
+    }
+
+    /**
+     * 设置背景图片并根据屏幕尺寸进行适配
+     * @param bgResPath 背景图片资源的路径
+     */
+    setBackground(bgResPath: string) {
+        app.res.loadRes<SpriteFrame>(bgResPath).then((res) => {
+            const bgSprite = this.background.getComponent(Sprite);
+            bgSprite.spriteFrame = res;
+            this.adaptBackgroundToScreen(this.background);
+        });
+    }
+
+    /**
+     * 根据屏幕大小调整背景的尺寸，防止出现黑边。采用等比缩放策略
+     * @param node 需要调整尺寸的节点
+     */
+    adaptBackgroundToScreen(node: Node) {
+        if (!node) return;
+        const screenSize = view.getVisibleSize();
+        const designSize = view.getDesignResolutionSize();
+        const scale = Math.max(screenSize.width / designSize.width, screenSize.height / designSize.height);
+        node.setScale(scale, scale);
     }
 
     /**
@@ -86,17 +116,15 @@ export class UIMgr {
      * @param scenePath 场景路径
      */
     switchScene(scenePath: string) {
+        for (const child of this.panelLayer?.children) {
+            this.closePanel(child.uuid);
+        }
+
         app.res.loadRes<Prefab>(scenePath, (progress: number) => {
             // 更新加载进度
-            if (this.loadingComponent) {
-                this.rootNode.insertChild(this.loadingComponent.node, -1);
-                this.loadingComponent.node.active = true;
-                this.loadingComponent.updateProgress(progress);
-            }
+            this.loadingComponent?.updateProgress(progress);
         }).then(prefab => {
-            if (this.loadingComponent) {
-                this.loadingComponent.node.active = false;
-            }
+            this.loadingComponent?.hide();
             // 移除上一个场景
             this.sceneLayer.removeChild(this.curShowScene);
             this.curShowScene?.destroy();
@@ -111,30 +139,30 @@ export class UIMgr {
      * 打开弹窗
      * @param viewPath 弹窗视图预制体路径
      */
-    openPopup(viewPath: string) {
-        app.res.loadRes<Prefab>(viewPath).then((prefab) => {
-            // 防止点击穿透
-            if (!this.popupLayer.getComponent(BlockInputEvents)) {
-                this.popupLayer.addComponent(BlockInputEvents);
-            }
-            this.popupLayer.addChild(instantiate(prefab));
-        });
+    async openPanel(viewPath: string) {
+        const prefab = await app.res.loadRes<Prefab>(viewPath);
+        // 防止点击穿透
+        if (!this.panelLayer.getComponent(BlockInputEvents)) {
+            this.panelLayer.addComponent(BlockInputEvents);
+        }
+        const node = instantiate(prefab);
+        this.panelLayer.addChild(node);
+        return node;
     }
 
     /**
      * 关闭弹窗
      * @param childUuid 弹窗节点uuid
      */
-    closePopup(childUuid: string) {
-        const node = this.popupLayer.getChildByUuid(childUuid);
-        this.popupLayer.removeChild(node);
+    closePanel(childUuid: string) {
+        const node = this.panelLayer.getChildByUuid(childUuid);
+        this.panelLayer.removeChild(node);
         node?.destroy();
         // 子节点清空时允许点击穿透
-        if (this.popupLayer.children.length == 0) {
-            this.popupLayer.getComponent(BlockInputEvents)?.destroy();
+        if (this.panelLayer.children.length == 0) {
+            this.panelLayer.getComponent(BlockInputEvents)?.destroy();
         }
     }
-
 
     /**
      * 展示提示内容
@@ -153,16 +181,18 @@ export class UIMgr {
         let textTransform = textNode.addComponent(UITransform);
         textLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
         textLabel.verticalAlign = Label.VerticalAlign.CENTER;
-        textLabel.fontSize = 30;
+        textLabel.fontSize = 60;
         textLabel.string = text;
+        textLabel.lineHeight = textLabel.fontSize;
 
         // 当文本宽度过长时，设置为自动换行格式
-        if (text.length * textLabel.fontSize > (width * 3) / 5) {
-            textLabel.overflow = Label.Overflow.RESIZE_HEIGHT;
-        } else {
-            textTransform.width = text.length * textLabel.fontSize;
+        textTransform.width = text.length * textLabel.fontSize;
+        if (textTransform.width > width * 0.6) {
+            textTransform.width = width * 0.6;
+            textLabel.enableWrapText = true;
+            textLabel.overflow = Label.Overflow.SHRINK;
         }
-        let lineCount = ~~((text.length * textLabel.fontSize) / ((width * 3) / 5)) + 1;
+        let lineCount = ~~((textTransform.width) / (width * 0.6)) + 1;
         textTransform.height = textLabel.fontSize * lineCount;
 
         // 背景设置

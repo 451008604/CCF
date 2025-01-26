@@ -5,9 +5,9 @@ import { Json } from "../Utils/Json";
 /**
  * 数据管理器
  */
-export class DataMgr {
+export class StorageMgr {
     private constructor() { }
-    static readonly instance: DataMgr = new DataMgr();
+    static readonly instance: StorageMgr = new StorageMgr();
 
     /**
      * 存储数据
