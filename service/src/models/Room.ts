@@ -1,4 +1,4 @@
-import { server } from "..";
+import { webSocketServer } from "..";
 import { RoomModel, RoomStatus } from "../shared/global/data";
 import { hall } from "./Hall";
 import { User } from "./User";
@@ -20,7 +20,7 @@ export class Room implements RoomModel {
     addUser(user: User) {
         this.users[user.userId] = user;
 
-        server.broadcastMsg("RoomUpdate", { roomInfo: this.getRoomData() }, hall.getUserToConn(this.users));
+        webSocketServer.broadcastMsg("RoomUpdate", { roomInfo: this.getRoomData() }, hall.getUserToConn(this.users));
     }
 
     /**
@@ -30,7 +30,7 @@ export class Room implements RoomModel {
     delUser(userId: string) {
         delete this.users[userId];
 
-        server.broadcastMsg("RoomUpdate", { roomInfo: this.getRoomData() }, hall.getUserToConn(this.users));
+        webSocketServer.broadcastMsg("RoomUpdate", { roomInfo: this.getRoomData() }, hall.getUserToConn(this.users));
     }
 
     /**

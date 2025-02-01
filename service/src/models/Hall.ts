@@ -1,12 +1,12 @@
 import { Room } from "./Room";
-import { server } from "..";
 import { WsConnection } from "tsrpc";
 import { RoomStatus } from "../shared/global/data";
 import { User } from "./User";
+import { webSocketServer } from "..";
 
 class Hall {
 
-    private rooms: Map<string, Room> = new Map();
+    rooms: Map<string, Room> = new Map();
 
     /**
      * 创建房间
@@ -127,7 +127,7 @@ class Hall {
     getUserToConn(users: { [key: string]: User; }) {
         let conns: WsConnection[] = [];
         for (const user of Object.values(users)) {
-            for (const conn of server.connections.values()) {
+            for (const conn of webSocketServer.connections.values()) {
                 if (conn.id == user.conn?.id) {
                     conns.push(conn);
                     break;

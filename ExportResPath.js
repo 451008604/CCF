@@ -69,4 +69,6 @@ fileModel += `\n};\n`;
 // 对文件名进行转换
 fileModel = fileModel.replaceAll(/\.(prefab|txt|plist|xml|json|yaml|ini|csv|md)/g, "").replaceAll(/\.(jpg|jpeg|png)/g, "/spriteFrame");
 
-fs.writeFileSync("./assets/Bundles/ResPaths.ts", fileModel);
+fs.writeFileSync("./assets/Core/ResPaths.ts", fileModel);
+
+console.log(`ExportResPath.js 执行完毕`);

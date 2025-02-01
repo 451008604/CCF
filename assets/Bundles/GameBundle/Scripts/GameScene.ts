@@ -1,6 +1,6 @@
-import { _decorator, Button, instantiate, Node, Prefab, Sprite, SpriteFrame, Texture2D } from 'cc';
+import { _decorator, Button, Node } from 'cc';
 import { ComponentBase } from '../../../Core/Scripts/Components/ComponentBase';
-import { ResPaths } from '../../ResPaths';
+import { ResPaths } from 'db://assets/Core/ResPaths';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameScene')
@@ -20,7 +20,6 @@ export class GameScene extends ComponentBase {
     }
 
     private onClickPopupBtn() {
-        app.ui.openPanel(ResPaths.MainBundle.PopupDemo1Prefab);
     }
 
     update(deltaTime: number) {

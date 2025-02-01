@@ -1,9 +1,7 @@
 import { _decorator, BlockInputEvents, NodeEventType, ProgressBar, sys } from 'cc';
 import { ComponentBase } from './ComponentBase';
-import { NodePaths } from 'db://assets/Core/NodePaths';
-import { DataManager } from 'db://assets/NetWork/shared/global/data';
 import { FrameEnumEventMsgID } from '../FrameEnum';
-import { ResPaths } from '../../ResPaths';
+import { DataManager } from 'db://assets/Model/DataManager';
 const { ccclass, property } = _decorator;
 
 /**
@@ -17,7 +15,7 @@ export class LoadingPanel extends ComponentBase {
     protected onLoadAfter(): void {
         // 防止点击穿透
         this.node.addComponent(BlockInputEvents);
-        const bj = this.node.getChildByPath(NodePaths.LoadingPanelPrefab.bj);
+        const bj = this.node.getChildByPath("");
         app.ui.adaptBackgroundToScreen(bj);
 
         this.node.on(NodeEventType.ACTIVE_CHANGED, this.activeChanged, this);
@@ -63,7 +61,7 @@ export class LoadingPanel extends ComponentBase {
                     }).catch(() => app.ui.showTips("获取用户信息失败"));
                 }
             } else {
-                this.node.getChildByPath(NodePaths.LoadingPanelPrefab.shouquan).active = false;
+                this.node.getChildByPath("").active = false;
             }
         }
     }

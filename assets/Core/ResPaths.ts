@@ -6,18 +6,12 @@
 export const ResPaths = {
 
 	GameBundle: {
-		ChessBoardPrefab: "GameBundle/ChessBoard",
-		ChessContainerPrefab: "GameBundle/ChessContainer",
 		GameScenePrefab: "GameBundle/GameScene",
 	},
 
-	LoadingBundle: {
-		LoadingViewPrefab: "LoadingBundle/LoadingView",
-	},
-
 	MainBundle: {
+		LoadingViewPrefab: "MainBundle/LoadingView",
 		MainScenePrefab: "MainBundle/MainScene",
-		PopupDemo1Prefab: "MainBundle/PopupDemo1",
 		EnJson: "MainBundle/Res/Lang/Lable/en",
 		ZhJson: "MainBundle/Res/Lang/Lable/zh",
 	},

@@ -1,6 +1,6 @@
 import { __private, _decorator, Button, Node } from 'cc';
 import { ComponentBase } from '../../../Core/Scripts/Components/ComponentBase';
-import { ResPaths } from '../../ResPaths';
+import { ResPaths } from 'db://assets/Core/ResPaths';
 const { ccclass, property } = _decorator;
 
 @ccclass('MainScene')
