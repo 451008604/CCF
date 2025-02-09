@@ -29,15 +29,11 @@ class Hall {
     joinRoom(roomId: string, user: User) {
         let room = this.rooms.get(roomId);
         if (!room) {
-            // 新建房间
-            room = new Room(roomId);
-            room.addUser(user);
-            this.rooms.set(roomId, room);
-            return room;
+            return;
         }
 
         // 已在房间内
-        if (room.hasUser(user.token)) {
+        if (room.hasUser(user.userId)) {
             return room;
         }
         // 房间存在且人员未满
@@ -46,6 +42,7 @@ class Hall {
             room.addUser(user);
             return room;
         }
+        return;
     }
 
     /**
@@ -92,13 +89,13 @@ class Hall {
     }
 
     /**
-     * 根据用户的token获取玩家所在的房间。
-     * @param token 用户的token
+     * 根据用户的ID获取玩家所在的房间。
+     * @param userId 用户的ID
      * @returns 如果找到，返回房间对象；否则返回undefined。
      */
-    userExistRoomByUserToken(token: string) {
+    userExistRoomByUserToken(userId: string) {
         for (const room of this.rooms.values()) {
-            if (room.hasUser(token)) {
+            if (room.hasUser(userId)) {
                 return room;
             }
         }

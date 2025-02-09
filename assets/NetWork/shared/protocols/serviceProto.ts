@@ -4,6 +4,7 @@ import { ReqCode2Session, ResCode2Session } from './PtlCode2Session';
 import { ReqJoinRoom, ResJoinRoom } from './PtlJoinRoom';
 import { ReqLogin, ResLogin } from './PtlLogin';
 import { ReqRoomList, ResRoomList } from './PtlRoomList';
+import { ReqUserSelect, ResUserSelect } from './PtlUserSelect';
 
 export interface ServiceType {
     api: {
@@ -22,6 +23,10 @@ export interface ServiceType {
         "RoomList": {
             req: ReqRoomList,
             res: ResRoomList
+        },
+        "UserSelect": {
+            req: ReqUserSelect,
+            res: ResUserSelect
         }
     },
     msg: {
@@ -30,7 +35,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 11,
+    "version": 14,
     "services": [
         {
             "id": 3,
@@ -58,6 +63,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 5,
             "name": "RoomList",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 7,
+            "name": "UserSelect",
             "type": "api",
             "conf": {}
         }
@@ -95,6 +106,20 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
+                    "id": 3,
+                    "name": "round",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 4,
+                    "name": "currentUserId",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
                     "id": 2,
                     "name": "users",
                     "type": {
@@ -124,6 +149,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 {
                     "id": 2,
                     "value": 2
+                },
+                {
+                    "id": 3,
+                    "value": 3
                 }
             ]
         },
@@ -156,6 +185,34 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "headImg",
                     "type": {
                         "type": "String"
+                    }
+                },
+                {
+                    "id": 6,
+                    "name": "selectIdx",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 7,
+                    "name": "pos",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 8,
+                    "name": "score",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 9,
+                    "name": "changeScore",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
@@ -262,11 +319,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
-                    "name": "userInfo",
+                    "id": 1,
+                    "name": "userId",
                     "type": {
-                        "type": "Reference",
-                        "target": "../global/data/UserModel"
+                        "type": "String"
                     }
                 }
             ]
@@ -326,6 +382,39 @@ export const serviceProto: ServiceProto<ServiceType> = {
                             "type": "Reference",
                             "target": "../global/data/RoomModel"
                         }
+                    }
+                }
+            ]
+        },
+        "PtlUserSelect/ReqUserSelect": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "idx",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
+        "PtlUserSelect/ResUserSelect": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
                     }
                 }
             ]

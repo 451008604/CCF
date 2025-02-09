@@ -11,7 +11,7 @@ export class NetWorkMgr {
     static readonly instance: NetWorkMgr = new NetWorkMgr();
 
     private _client: WsClient<ServiceType>;
-    private _serverConfig = { address: "localhost", wsProto: "ws", wsPort: "3000", httpProto: "http", httpPort: "3001" };
+    private _serverConfig = { address: "124.220.169.246", wsProto: "ws", wsPort: "3010", httpProto: "http", httpPort: "3011" };
 
     /**
      * 获取 WebSocket 服务器地址
@@ -75,7 +75,7 @@ export class NetWorkMgr {
         // 对所有的服务器通知挂载监听
         serviceProto.services.forEach((value) => {
             if (value.type == 'msg') {
-                this._client.listenMsg(RegExp(value.name), res => { app.log.info("msg       ->", res); app.event.send(FrameEnumEventMsgID.NetWorkNotify, value.name, res); });
+                this._client.listenMsg(RegExp(value.name), res => { app.log.info(value.name + "       ->", res); app.event.send(FrameEnumEventMsgID.NetWorkNotify, value.name, res); });
             }
         });
 

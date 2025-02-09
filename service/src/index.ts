@@ -16,7 +16,7 @@ try {
 
 // Create the Server
 export const webSocketServer = new WsServer(serviceProto, {
-    port: 3000,
+    port: 3010,
     // Remove this to use binary mode (remove from the client too)
     json: true,
     heartbeatWaitTime: 15000,
@@ -57,7 +57,7 @@ async function main() {
 }
 main();
 
-const httpServer = new HttpServer(serviceProto, { port: 3001, https: ssl });
+const httpServer = new HttpServer(serviceProto, { port: 3011, https: ssl });
 httpServer.flows.preRecvDataFlow.push(async v => {
     let conn = v.conn as HttpConnection;
     if (conn.httpReq.method === 'GET') {

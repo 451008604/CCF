@@ -16,7 +16,9 @@ export var DataManager: {
     roomModel: {
         roomId: "",
         roomStatus: RoomStatus.GAME_WAIT,
-        users: {}
+        users: {},
+        round: 0,
+        currentUserId: ""
     },
     /**
      * 用户自身模型
@@ -26,7 +28,11 @@ export var DataManager: {
         userId: "",
         token: "",
         userName: "",
-        headImg: ""
+        headImg: "",
+        selectIdx: 0,
+        pos: 0,
+        score: 0,
+        changeScore: 0
     },
     /**
      * 大厅模型

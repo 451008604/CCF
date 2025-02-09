@@ -14,13 +14,20 @@ export async function ApiLoginReq(client: WsClient<ServiceType>) {
     if (!resCode2Session.isSucc) {
         !sys.isBrowser && app.ui.showTips("openid获取失败");
     } else {
-        DataManager.selfModel.token = resCode2Session.res.openid;
+        DataManager.selfModel.userId = resCode2Session.res.openid;
     }
 
     // 请求登录
-    const resLogin = await client.callApi("Login", { userInfo: DataManager.selfModel });
+    const resLogin = await client.callApi("Login", { userId: DataManager.selfModel.userId });
     if (resLogin.isSucc && resLogin.res.userInfo) {
         DataManager.selfModel = resLogin.res.userInfo;
+    }
+
+    if (!DataManager.selfModel.token) {
+        const timestamp = Date.now().toString();
+        DataManager.selfModel.token = timestamp;
+        DataManager.selfModel.userId = timestamp.substring(timestamp.length - 5);
+        DataManager.selfModel.userName = "玩家" + DataManager.selfModel.userId;
     }
     // 发送登录成功通知
     app.event.send(FrameEnumEventMsgID.UserDataChange);

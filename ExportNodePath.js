@@ -148,7 +148,7 @@ let fileModel = `/**\n * 每个Prefab中的节点引用路径。请不要手动�
 for (const prefabName in copyResult) {
     fileModel += `\n\t${prefabName}: {\n`;
     for (const resName in copyResult[prefabName]) {
-        fileModel += `\t\t${resName}: "${copyResult[prefabName][resName]}",\n`;
+        fileModel += `\t\t"${resName}": "${copyResult[prefabName][resName]}",\n`;
     }
     fileModel += `\t},\n`;
 }

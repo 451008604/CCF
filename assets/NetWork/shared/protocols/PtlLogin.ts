@@ -2,7 +2,7 @@ import { UserModel } from "../global/data";
 import { BaseRequest, BaseResponse, BaseConf } from "./base";
 
 export interface ReqLogin extends BaseRequest {
-    userInfo: UserModel;
+    userId: string;
 }
 
 export interface ResLogin extends BaseResponse {

@@ -60,7 +60,7 @@ let fileModel = `/**\n * 每个Bundle中的资源引用路径。请不要手动�
 for (const bundleName in enumResult) {
     fileModel += `\n\t${bundleName}: {\n`;
     for (const resName in enumResult[bundleName]) {
-        fileModel += `\t\t${resName}: "${enumResult[bundleName][resName]}",\n`;
+        fileModel += `\t\t"${resName}": "${enumResult[bundleName][resName]}",\n`;
     }
     fileModel += `\t},\n`;
 }

@@ -3,6 +3,21 @@ import { UserModel } from "../shared/global/data";
 
 export class User implements UserModel {
     /**
+     * 变化的积分
+     */
+    changeScore: number = 0;
+
+    /**
+     * 积分
+     */
+    score: number = 0;
+
+    /**
+     * 对局中的位置
+     */
+    pos: number = 0;
+
+    /**
      * 用户的连接对象
      */
     conn!: WsConnection;
@@ -26,5 +41,10 @@ export class User implements UserModel {
      * 用户头像
      */
     headImg: string = "";
+
+    /**
+     * 选择的索引（0 or 1）
+     */
+    selectIdx: number = -1;
 
 }

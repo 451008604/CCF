@@ -107,8 +107,19 @@ export class UIMgr {
         if (!node) return;
         const screenSize = view.getVisibleSize();
         const designSize = view.getDesignResolutionSize();
-        const scale = Math.max(screenSize.width / designSize.width, screenSize.height / designSize.height);
-        node.setScale(scale, scale);
+        const nodeUITransform = node.getComponent(UITransform);
+
+        if (designSize.width > designSize.height) {
+            // 横屏游戏，高度适配
+            const scale = screenSize.height / nodeUITransform.height;
+            nodeUITransform.height = screenSize.height;
+            nodeUITransform.width *= scale;
+        } else {
+            // 竖屏游戏，宽度适配
+            const scale = screenSize.width / nodeUITransform.width;
+            nodeUITransform.width = screenSize.width;
+            nodeUITransform.height *= scale;
+        }
     }
 
     /**
@@ -170,6 +181,7 @@ export class UIMgr {
      * @param param1 可选配置项
      */
     showTips(text: string = '', { gravity = FrameEnumTipsPosition.CENTER, duration = 1, bg_color = color(102, 102, 102, 255) } = {}) {
+        if (!text) return;
         let canvas = this.tipsLayer || director.getScene().getComponentInChildren(Canvas).node;
         let canvasTransform = canvas.getComponent(UITransform);
         let width = canvasTransform.width;
