@@ -24,6 +24,7 @@ export default async function (call: ApiCall<ReqUserSelect, ResUserSelect>) {
     if (call.req.idx == info.room.resultReward) {
         // 选择正确
         info.room.round++;
+        info.room.resultReward = Math.floor(Math.random() + 0.5);
         for (const user of Object.values(info.room.users)) {
             user.selectIdx = -1;
         }
@@ -46,6 +47,7 @@ export default async function (call: ApiCall<ReqUserSelect, ResUserSelect>) {
         if (info.room.users[info.room.currentUserId].selectIdx != -1) {
             // 在场的所有玩家本轮已进行过选择
             info.room.round++;
+            info.room.resultReward = Math.floor(Math.random() + 0.5);
             for (const user of Object.values(info.room.users)) {
                 user.selectIdx = -1;
             }
