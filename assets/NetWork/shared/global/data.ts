@@ -22,6 +22,6 @@ export type UserModel = {
     headImg: string; // 头像
     selectIdx: number; // 选择的索引（0 or 1）
     pos: number; // 对局中的位置
-    score: number; // 积分
+    score: string; // 积分
     changeScore: number; // 变化的积分
 };

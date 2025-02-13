@@ -6,7 +6,7 @@ export class Config {
     private constructor() {
         // 初始化应用id
         if (sys.platform == sys.Platform.WECHAT_GAME) {
-            this.appid = "wx1d5e0e6c11246a06"; // 微信小游戏
+            this.appid = ""; // 微信小游戏
         }
     }
     static readonly instance: Config = new Config();
@@ -20,7 +20,7 @@ export class Config {
      * 获取服务器地址
      * @returns {string} 服务器地址
      */
-    getServerAddress() {
-        return "https://mathboomcms.sxycykj.net/api/app/clientAPI";
+    getServerAddress(): string {
+        return "https://821boxgame.sxycykj.net/api/app/clientAPI";
     }
 }

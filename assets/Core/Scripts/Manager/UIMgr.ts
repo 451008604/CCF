@@ -126,24 +126,21 @@ export class UIMgr {
      * 切换展示场景预制体
      * @param scenePath 场景路径
      */
-    switchScene(scenePath: string) {
+    async switchScene(scenePath: string) {
         for (const child of this.panelLayer?.children) {
             this.closePanel(child.uuid);
         }
 
-        app.res.loadRes<Prefab>(scenePath, (progress: number) => {
-            // 更新加载进度
-            this.loadingComponent?.updateProgress(progress);
-        }).then(prefab => {
-            this.loadingComponent?.hide();
-            // 移除上一个场景
-            this.sceneLayer.removeChild(this.curShowScene);
-            this.curShowScene?.destroy();
-            // 加载新的场景
-            const sceneNode = instantiate(prefab);
-            this.sceneLayer.addChild(sceneNode);
-            this.curShowScene = sceneNode;
-        });
+        const prefab = await app.res.loadRes<Prefab>(scenePath, (progress: number) => { this.loadingComponent?.updateProgress(progress); });
+        this.loadingComponent?.hide();
+        // 移除上一个场景
+        this.sceneLayer.removeChild(this.curShowScene);
+        this.curShowScene?.destroy();
+        // 加载新的场景
+        const sceneNode = instantiate(prefab);
+        this.sceneLayer.addChild(sceneNode);
+        this.curShowScene = sceneNode;
+        return sceneNode;
     }
 
     /**

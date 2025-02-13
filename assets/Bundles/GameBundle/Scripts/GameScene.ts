@@ -32,6 +32,7 @@ export class GameScene extends ComponentBase {
         this.桌面_User005 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User005).getComponent(User);
         this.桌面_User006 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User006).getComponent(User);
         this.桌面_User007 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User007).getComponent(User);
+        this.bindNodeClickHandler(NodePaths.GameScenePrefab.顶部栏_返回按钮, () => { app.ui.switchScene(ResPaths.MainBundle.HallTablePrefab); });
         this.桌面_角色1 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_角色1);
     }
 
@@ -84,6 +85,8 @@ export class GameScene extends ComponentBase {
         this.桌面_User005.setHaedPos(0);
         this.桌面_User006.setHaedPos(0);
         this.桌面_User007.setHaedPos(0);
+
+        this.getChild(NodePaths.GameScenePrefab.顶部栏_房间号框_Label).getComponent(Label).string = "房间号：" + DataManager.roomModel.roomId;
 
         this.refershPos();
     }

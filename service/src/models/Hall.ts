@@ -9,12 +9,13 @@ class Hall {
     rooms: Map<string, Room> = new Map();
 
     /**
-     * 创建房间
-     * @param user 用户对象
-     * @returns 创建的房间对象
+     * 创建新房间
+     * @param roomId 房间ID，如果未提供则使用当前时间戳作为ID
+     * @param user 创建房间的用户对象
+     * @returns 返回新创建的房间对象
      */
-    createRoom(user: User) {
-        let room = new Room(Date.now().toString());
+    createRoom(roomId: string, user: User) {
+        let room = new Room(roomId || Date.now().toString());
         room.addUser(user);
         this.rooms.set(room.roomId, room);
         return room;
@@ -34,6 +35,7 @@ class Hall {
 
         // 已在房间内
         if (room.hasUser(user.userId)) {
+            webSocketServer.broadcastMsg("RoomUpdate", { roomInfo: room.getRoomData() }, hall.getUserToConn(room.users));
             return room;
         }
         // 房间存在且人员未满

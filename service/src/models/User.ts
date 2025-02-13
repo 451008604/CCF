@@ -10,7 +10,7 @@ export class User implements UserModel {
     /**
      * 积分
      */
-    score: number = 0;
+    score: string = "0.00";
 
     /**
      * 对局中的位置

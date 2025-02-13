@@ -5,7 +5,7 @@ import { RoomModel, RoomStatus, UserModel } from "../NetWork/shared/global/data"
  * 包含大厅模型、房间模型和用户自身模型
  */
 export var DataManager: {
-    hallModel: any;
+    hallModel: HallModel;
     roomModel: RoomModel;
     selfModel: UserModel;
 } = {
@@ -29,14 +29,29 @@ export var DataManager: {
         token: "",
         userName: "",
         headImg: "",
-        selectIdx: 0,
+        selectIdx: -1,
         pos: 0,
-        score: 0,
+        score: "0.00",
         changeScore: 0
     },
     /**
      * 大厅模型
-     * 目前未定义
      */
-    hallModel: undefined,
+    hallModel: {
+        circleId: 0,
+        user_id: 0,
+        name: "",
+        people_num: "",
+        id: 0,
+        circle_desc: ""
+    },
+};
+
+export type HallModel = {
+    circle_desc: string;
+    user_id: number;
+    name: string;
+    people_num: string;
+    id: number;
+    circleId: number;
 };

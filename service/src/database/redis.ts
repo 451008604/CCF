@@ -14,8 +14,8 @@ class Redis {
         }
         // 重置redis客户端连接
         this._client = createClient({
-            url: "redis://localhost:6380",
-            password: ""
+            url: "redis://127.0.0.1:6379",
+            password: "123456"
         });
         await this._client.connect();
         this._client.once('error', (err) => {
