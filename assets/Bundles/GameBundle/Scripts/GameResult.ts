@@ -15,7 +15,8 @@ export class GameResult extends ComponentBase {
         const users = Object.values(DataManager.roomModel.users);
         const myself: UserModel = DataManager.roomModel.users[DataManager.selfModel.userId];
         users.sort((a, b) => b.changeScore - a.changeScore);
-        this.isWinner = users.slice(0, 3).some(user => user.userId === DataManager.selfModel.userId);
+
+        this.isWinner = myself.changeScore > 0;
         if (this.isWinner) {
             this.node.getChildByPath(NodePaths.GameResultPrefab.win).active = true;
             this.node.getChildByPath(NodePaths.GameResultPrefab.win_胜利框1).active = true;

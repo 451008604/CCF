@@ -22,9 +22,20 @@ export default async function (call: ApiCall<ReqUserSelect, ResUserSelect>) {
 
     info.user.selectIdx = call.req.idx;
     if (call.req.idx == info.room.resultReward) {
-        // 选择正确
+        // 计算分数
+        info.user.changeScore += 10;
+    } else {
+        // 选择错误
+        info.user.changeScore -= 10;
+    }
+
+    info.room.lastUserId = info.room.currentUserId;
+    info.room.currentUserId = info.room.nextUserId();
+    if (info.room.users[info.room.currentUserId].selectIdx != -1) {
+        // 在场的所有玩家本轮已进行过选择
         info.room.round++;
-        info.room.resultReward = Math.floor(Math.random() + 0.5);
+        info.room.resultReward = 0;
+        // info.room.resultReward = Math.floor(Math.random() * 2);
         for (const user of Object.values(info.room.users)) {
             user.selectIdx = -1;
         }
@@ -34,30 +45,6 @@ export default async function (call: ApiCall<ReqUserSelect, ResUserSelect>) {
             if (user.pos >= info.room.round) {
                 info.room.currentUserId = user.userId;
                 break;
-            }
-        }
-
-        // 计算分数
-        info.user.changeScore += 10;
-    } else {
-        // 选择错误
-        info.room.currentUserId = info.room.nextUserId();
-        info.user.changeScore -= 10;
-
-        if (info.room.users[info.room.currentUserId].selectIdx != -1) {
-            // 在场的所有玩家本轮已进行过选择
-            info.room.round++;
-            info.room.resultReward = Math.floor(Math.random() + 0.5);
-            for (const user of Object.values(info.room.users)) {
-                user.selectIdx = -1;
-            }
-
-            // 下家先手
-            for (const user of Object.values(info.room.users)) {
-                if (user.pos >= info.room.round) {
-                    info.room.currentUserId = user.userId;
-                    break;
-                }
             }
         }
     }

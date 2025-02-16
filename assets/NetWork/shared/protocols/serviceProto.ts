@@ -1,6 +1,7 @@
 import { ServiceProto } from 'tsrpc-proto';
 import { MsgRoomUpdate } from './MsgRoomUpdate';
 import { ReqCode2Session, ResCode2Session } from './PtlCode2Session';
+import { ReqExitRoom, ResExitRoom } from './PtlExitRoom';
 import { ReqJoinRoom, ResJoinRoom } from './PtlJoinRoom';
 import { ReqLogin, ResLogin } from './PtlLogin';
 import { ReqRoomList, ResRoomList } from './PtlRoomList';
@@ -11,6 +12,10 @@ export interface ServiceType {
         "Code2Session": {
             req: ReqCode2Session,
             res: ResCode2Session
+        },
+        "ExitRoom": {
+            req: ReqExitRoom,
+            res: ResExitRoom
         },
         "JoinRoom": {
             req: ReqJoinRoom,
@@ -35,7 +40,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 15,
+    "version": 18,
     "services": [
         {
             "id": 3,
@@ -45,6 +50,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 4,
             "name": "Code2Session",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 8,
+            "name": "ExitRoom",
             "type": "api",
             "conf": {}
         },
@@ -110,6 +121,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "round",
                     "type": {
                         "type": "Number"
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "lastUserId",
+                    "type": {
+                        "type": "String"
                     }
                 },
                 {
@@ -205,12 +223,19 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 8,
                     "name": "score",
                     "type": {
-                        "type": "String"
+                        "type": "Number"
                     }
                 },
                 {
                     "id": 9,
                     "name": "changeScore",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 10,
+                    "name": "gold",
                     "type": {
                         "type": "Number"
                     }
@@ -264,6 +289,30 @@ export const serviceProto: ServiceProto<ServiceType> = {
         },
         "base/BaseResponse": {
             "type": "Interface"
+        },
+        "PtlExitRoom/ReqExitRoom": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "PtlExitRoom/ResExitRoom": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
         },
         "PtlJoinRoom/ReqJoinRoom": {
             "type": "Interface",

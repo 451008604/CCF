@@ -22,6 +22,7 @@ export class MainScene extends ComponentBase {
         this.node.getChildByPath(NodePaths.MainScenePrefab.头像框_Label).getComponent(Label).string = DataManager.selfModel.userName;
         this.node.getChildByPath(NodePaths.MainScenePrefab.头像框_Label001).getComponent(Label).string = "ID:" + DataManager.selfModel.userId;
         this.node.getChildByPath(NodePaths.MainScenePrefab.公告文字栏_Label).getComponent(Label).string = "暂无公告";
+        this.node.getChildByPath(NodePaths.MainScenePrefab.货币框_Label).getComponent(Label).string = "" + DataManager.selfModel.gold;
     }
 
     update(deltaTime: number) {

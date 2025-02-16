@@ -39,12 +39,16 @@ export class HallManager extends ComponentBase {
         this.getChild(NodePaths.HallManagerPrefab.bg2_成员管理_ScrollView_view_content).removeAllChildren();
         // 刷新圈子成员列表
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getCircleInfoList", { user_id: DataManager.selfModel.userId, circle_id: DataManager.hallModel.circleId }));
-        if (resData && resData.code == 1000) {
-            const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem2Prefab);
-            for (const i in resData.data) {
-                const item = instantiate(itemRes);
-                item.getComponent(HallItem2).setData(resData.data[i]);
-                this.getChild(NodePaths.HallManagerPrefab.bg2_成员管理_ScrollView_view_content).addChild(item);
+        if (resData) {
+            if (resData.code == 1000) {
+                const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem2Prefab);
+                for (const i in resData.data) {
+                    const item = instantiate(itemRes);
+                    item.getComponent(HallItem2).setData(resData.data[i]);
+                    this.getChild(NodePaths.HallManagerPrefab.bg2_成员管理_ScrollView_view_content).addChild(item);
+                }
+            } else {
+                app.ui.showTips(resData.message);
             }
         }
     }
@@ -55,12 +59,16 @@ export class HallManager extends ComponentBase {
         this.getChild(NodePaths.HallManagerPrefab.bg2_加入申请_ScrollView001_view_content).removeAllChildren();
         // 刷新加入申请列表
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getCircleApply", { user_id: DataManager.selfModel.userId }));
-        if (resData && resData.code == 1000) {
-            const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem3Prefab);
-            for (const i in resData.data) {
-                const item = instantiate(itemRes);
-                item.getComponent(HallItem3).setData(resData.data[i]);
-                this.getChild(NodePaths.HallManagerPrefab.bg2_加入申请_ScrollView001_view_content).addChild(item);
+        if (resData) {
+            if (resData.code == 1000) {
+                const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem3Prefab);
+                for (const i in resData.data) {
+                    const item = instantiate(itemRes);
+                    item.getComponent(HallItem3).setData(resData.data[i]);
+                    this.getChild(NodePaths.HallManagerPrefab.bg2_加入申请_ScrollView001_view_content).addChild(item);
+                }
+            } else {
+                app.ui.showTips(resData.message);
             }
         }
     }

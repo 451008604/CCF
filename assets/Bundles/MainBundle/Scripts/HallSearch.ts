@@ -18,14 +18,18 @@ export class HallSearch extends ComponentBase {
 
     async showCircleInfo(circleId: string) {
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getCircleInfo", { circle_id: circleId }));
-        if (resData && resData.code == 1000) {
-            this.circleInfo = resData;
-            this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label).getComponent(Label).string = "亲友圈名称：" + resData.data.name;
-            this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label001).getComponent(Label).string = "亲友圈ID：" + resData.data.id;
-            this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label002).getComponent(Label).string = "人数：" + resData.data.people_num;
-            this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label003).getComponent(Label).string = "亲友圈公告：" + resData.data.circle_desc;
+        if (resData) {
+            if (resData.code == 1000) {
+                this.circleInfo = resData;
+                this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label).getComponent(Label).string = "亲友圈名称：" + resData.data.name;
+                this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label001).getComponent(Label).string = "亲友圈ID：" + resData.data.id;
+                this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label002).getComponent(Label).string = "人数：" + resData.data.people_num;
+                this.node.getChildByPath(NodePaths.HallSearchPrefab.弹窗_文本框大_Label003).getComponent(Label).string = "亲友圈公告：" + resData.data.circle_desc;
 
-            this.node.active = true;
+                this.node.active = true;
+            } else {
+                app.ui.showTips(resData.message);
+            }
         }
     }
 

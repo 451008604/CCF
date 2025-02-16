@@ -16,8 +16,12 @@ export class HallItem3 extends ComponentBase {
 
     async handler(t: number) {
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/handleApply", { user_id: DataManager.selfModel.userId, circleInfo_id: this._info.circleInfo_id, type: t }));
-        if (resData && resData.code == 1000) {
-            this.node.removeFromParent();
+        if (resData) {
+            if (resData.code == 1000) {
+                this.node.removeFromParent();
+            } else {
+                app.ui.showTips(resData.message);
+            }
         }
     }
 

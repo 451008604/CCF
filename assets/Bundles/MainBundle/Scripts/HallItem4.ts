@@ -52,16 +52,19 @@ export class HallItem4 extends ComponentBase {
     async setData(info: any) {
         this._info = info;
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getCardTableUser", { card_table_id: info.id }));
-        app.log.info(info, resData);
         let userNum = 0;
-        if (resData && resData.code == 1000) {
-            userNum = resData.data.length;
-            for (const user of resData.data) {
-                if (user.user_id == DataManager.selfModel.userId) {
-                    const client = await app.network.client();
-                    client.callApi("JoinRoom", { roomId: "" + this._info.code, userInfo: DataManager.selfModel });
-                    break;
+        if (resData) {
+            if (resData.code == 1000) {
+                userNum = resData.data.length;
+                for (const user of resData.data) {
+                    if (user.user_id == DataManager.selfModel.userId) {
+                        const client = await app.network.client();
+                        client.callApi("JoinRoom", { roomId: "" + this._info.code, userInfo: DataManager.selfModel });
+                        break;
+                    }
                 }
+            } else {
+                app.ui.showTips(resData.message);
             }
         }
         this.getChild(NodePaths.HallItem4Prefab.Node_Label).getComponent(Label).string = "" + info.name;

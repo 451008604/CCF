@@ -2,6 +2,12 @@ import { WsConnection } from "tsrpc";
 import { UserModel } from "../shared/global/data";
 
 export class User implements UserModel {
+
+    /**
+     * 金钥匙数量
+     */
+    gold: number = 0;
+
     /**
      * 变化的积分
      */
@@ -10,7 +16,7 @@ export class User implements UserModel {
     /**
      * 积分
      */
-    score: string = "0.00";
+    score: number = 0;
 
     /**
      * 对局中的位置

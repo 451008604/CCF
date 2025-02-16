@@ -19,9 +19,13 @@ export class HallTableCreate extends ComponentBase {
         const name = this.getChild(NodePaths.HallTableCreatePrefab.kuang_Label001_EditBox).getComponent(EditBox).string;
         const num = this.getChild(NodePaths.HallTableCreatePrefab.kuang_Label002_EditBox).getComponent(EditBox).string;
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/createCardTable", { user_id: DataManager.selfModel.userId, name: name, people_num: num, circle_id: DataManager.hallModel.id }));
-        if (resData && resData.code == 1000) {
-            app.ui.closePanel(this.node.uuid);
-            app.event.send(MsgId.RefreshHallTable);
+        if (resData) {
+            if (resData.code == 1000) {
+                app.ui.closePanel(this.node.uuid);
+                app.event.send(MsgId.RefreshHallTable);
+            } else {
+                app.ui.showTips(resData.message);
+            }
         }
     }
 

@@ -37,7 +37,8 @@ export async function ApiLoginReq(client: WsClient<ServiceType>) {
     DataManager.selfModel.userId = "" + userInfo["data"]["id"];
     DataManager.selfModel.userName = userInfo["data"]["nickname"];
     DataManager.selfModel.headImg = userInfo["data"]["img"] || "";
-    DataManager.selfModel.score = userInfo["data"]["score"];
+    DataManager.selfModel.score = Number(userInfo["data"]["score"]);
+    DataManager.selfModel.gold = Number(userInfo["data"]["gold"]);
     DataManager.selfModel.token = Date.now().toString();
 
     // 请求登录

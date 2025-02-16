@@ -28,11 +28,18 @@ export class HallItem1 extends ComponentBase {
         this._info = info;
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getUserInfo", { user_id: info.user_id }));
         let userName = "-";
-        if (resData && resData.code == 1000) {
-            userName = resData.data.nickname;
-            this._headImg = resData.data.img;
+        if (resData) {
+            if (resData.code == 1000) {
+                userName = resData.data.nickname;
+                this._headImg = resData.data.img;
+            } else {
+                app.ui.showTips(resData.message);
+            }
         }
 
+        if (!this.node) {
+            return;
+        }
         this.node.getChildByPath(NodePaths.HallItem1Prefab.Label).getComponent(Label).string = "" + info.name;
         this.node.getChildByPath(NodePaths.HallItem1Prefab.Label001).getComponent(Label).string = "" + userName;
         this.node.getChildByPath(NodePaths.HallItem1Prefab.Label002).getComponent(Label).string = "" + info.people_num;

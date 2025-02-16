@@ -49,15 +49,19 @@ export class HallScene extends ComponentBase {
     async refreshClick() {
         this.bg_亲友圈_ScrollView_view_content.removeAllChildren();
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getCircleByUser", { user_id: DataManager.selfModel.userId }));
-        if (resData && resData.code == 1000) {
-            const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem1Prefab);
-            for (const i in resData.data) {
-                const item = instantiate(itemRes);
-                item.getComponent(HallItem1).setData(resData.data[i]);
-                this.bg_亲友圈_ScrollView_view_content.addChild(item);
-                if (i == "0") {
-                    item.getComponent(HallItem1).showCircleInfo();
+        if (resData) {
+            if (resData.code == 1000) {
+                const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem1Prefab);
+                for (const i in resData.data) {
+                    const item = instantiate(itemRes);
+                    item.getComponent(HallItem1).setData(resData.data[i]);
+                    this.bg_亲友圈_ScrollView_view_content.addChild(item);
+                    if (i == "0") {
+                        item.getComponent(HallItem1).showCircleInfo();
+                    }
                 }
+            } else {
+                app.ui.showTips(resData.message);
             }
         }
     }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { webSocketServer } from "..";
 import { RoomModel, RoomStatus } from "../shared/global/data";
 import { hall } from "./Hall";
@@ -15,6 +16,7 @@ export class Room implements RoomModel {
     users: { [key: string]: User; } = {};
     roomStatus: RoomStatus = RoomStatus.GAME_WAIT;
     round: number = 0;
+    lastUserId: string = "";
     currentUserId: string = "";
 
     /**
@@ -33,15 +35,14 @@ export class Room implements RoomModel {
         user.pos = minPos;
         this.users[user.userId] = user;
 
-        if (Object.values(this.users).length == 2) {
-            this.roomStatus = RoomStatus.GAME_START;
+        // 如果用户位置为0，则将当前用户ID设置为该用户的ID
+        if (minPos == 0) {
+            this.lastUserId = this.currentUserId = user.userId;
+        }
 
-            for (const user of Object.values(this.users)) {
-                if (user.pos === this.round) {
-                    this.currentUserId = user.userId;
-                    break;
-                }
-            }
+        // 如果房间中的用户数量达到2个，则将房间状态设置为游戏开始
+        if (Object.values(this.users).length == 6) {
+            this.roomStatus = RoomStatus.GAME_START;
         }
 
         webSocketServer.broadcastMsg("RoomUpdate", { roomInfo: this.getRoomData() }, hall.getUserToConn(this.users));
@@ -53,6 +54,7 @@ export class Room implements RoomModel {
     */
     delUser(userId: string) {
         delete this.users[userId];
+        axios.post("https://821boxgame.sxycykj.net/api/app/clientAPI/exitCardTable", { user_id: userId, code: this.roomId });
 
         webSocketServer.broadcastMsg("RoomUpdate", { roomInfo: this.getRoomData() }, hall.getUserToConn(this.users));
     }
@@ -128,13 +130,6 @@ export class Room implements RoomModel {
      * @returns 返回房间的RoomModel对象
      */
     getRoomData() {
-        // let room: RoomModel = {
-        //     roomId: "" + this.roomId,
-        //     roomStatus: this.roomStatus,
-        //     users: this.users,
-        //     round: 0,
-        //     currentUserId: ""
-        // };
         return Object.create(this) as Room;
     }
 

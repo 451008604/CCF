@@ -10,6 +10,7 @@ export type RoomModel = {
     roomId: string; // 房间id
     roomStatus: RoomStatus; // 房间状态
     round: number; // 轮次
+    lastUserId: string; // 上一个操作的玩家
     currentUserId: string; // 当前操作的玩家
     users: { [key: string]: UserModel; }; // 玩家列表
 };
@@ -22,6 +23,7 @@ export type UserModel = {
     headImg: string; // 头像
     selectIdx: number; // 选择的索引（0 or 1）
     pos: number; // 对局中的位置
-    score: string; // 积分
+    score: number; // 积分
     changeScore: number; // 变化的积分
+    gold: number; // 金钥匙数量
 };

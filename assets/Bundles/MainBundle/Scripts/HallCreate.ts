@@ -38,9 +38,13 @@ export class HallCreate extends ComponentBase {
             circle_desc: this.弹窗_Label004_EditBox.getComponent(EditBox).string
         });
         const data = Json.parse(resData);
-        if (data && data["code"] == 1000) {
-            app.ui.closePanel(this.node.uuid);
-            app.event.send(MsgId.RefreshCircle);
+        if (data) {
+            if (data["code"] == 1000) {
+                app.ui.closePanel(this.node.uuid);
+                app.event.send(MsgId.RefreshCircle);
+            } else {
+                app.ui.showTips(data.message);
+            }
         }
     }
 

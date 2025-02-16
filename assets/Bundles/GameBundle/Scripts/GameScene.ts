@@ -1,9 +1,9 @@
-import { _decorator, Label, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from 'cc';
+import { _decorator, Color, Label, Node, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
 import { NodePaths } from 'db://assets/Core/NodePaths';
 import { ComponentBase } from 'db://assets/Core/Scripts/Components/ComponentBase';
 import { User } from './User';
 import { DataManager } from 'db://assets/Model/DataManager';
-import { RoomStatus, UserModel } from 'db://assets/NetWork/shared/global/data';
+import { RoomModel, RoomStatus, UserModel } from 'db://assets/NetWork/shared/global/data';
 import { ServiceType } from 'db://assets/NetWork/shared/protocols/serviceProto';
 import { ResPaths } from 'db://assets/Core/ResPaths';
 const { ccclass, property } = _decorator;
@@ -20,8 +20,7 @@ export class GameScene extends ComponentBase {
     桌面_User006: User;
     桌面_User007: User;
     桌面_角色1: Node;
-
-    round: number = 0;
+    桌面_Label001: Node;
 
     protected onLoadAfter(): void {
         this.桌面_User000 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User000).getComponent(User);
@@ -32,8 +31,15 @@ export class GameScene extends ComponentBase {
         this.桌面_User005 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User005).getComponent(User);
         this.桌面_User006 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User006).getComponent(User);
         this.桌面_User007 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_User007).getComponent(User);
-        this.bindNodeClickHandler(NodePaths.GameScenePrefab.顶部栏_返回按钮, () => { app.ui.switchScene(ResPaths.MainBundle.HallTablePrefab); });
+        this.bindNodeClickHandler(NodePaths.GameScenePrefab.顶部栏_返回按钮, async () => {
+            const client = await app.network.client();
+            client.callApi("ExitRoom", {});
+            app.ui.switchScene(ResPaths.MainBundle.HallTablePrefab);
+        });
         this.桌面_角色1 = this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_角色1);
+        this.桌面_Label001 = this.getChild(NodePaths.GameScenePrefab.桌面_Label001);
+        this.桌面_角色1.setScale(new Vec3(0, 0, 0));
+        this.桌面_Label001.active = false;
     }
 
     protected netWorkHandler(msgId: keyof ServiceType['msg'], msgBody: ServiceType['msg'][keyof ServiceType['msg']]): void {
@@ -43,28 +49,62 @@ export class GameScene extends ComponentBase {
                     break;
                 }
 
-                DataManager.roomModel = msgBody.roomInfo;
-                this.refershPos();
+                this.refershPos(msgBody.roomInfo);
                 break;
         }
     }
 
-    refershPos() {
-        if (this.round != DataManager.roomModel.round) {
-            this.round = DataManager.roomModel.round;
-            app.res.loadRes<SpriteFrame>(ResPaths.GameBundle[`角色${DataManager.roomModel.round}Png`]).then(res => {
-                this.桌面_角色1.getComponent(Sprite).spriteFrame = res;
-                tween(this.桌面_角色1).to(.3, { scale: new Vec3(1, 1) }).delay(1).to(.3, { scale: new Vec3(0, 0) }).start();
-            });
+    refershPos(msgBody: RoomModel) {
+        // 获取当前用户信息
+        const curUser: UserModel = msgBody.users[msgBody.lastUserId];
+        // 获取之前的分数
+        const previousScore = DataManager.roomModel.users[msgBody.lastUserId].changeScore;
+        // 计算分数差异
+        const scoreDifference = curUser.changeScore - previousScore;
+
+        // 如果分数有变化，更新显示
+        if (scoreDifference !== 0) {
+            this.桌面_Label001.active = true;
+            this.桌面_Label001.getComponent(Label).string = `积分${scoreDifference > 0 ? '+' : ''}${scoreDifference}`;
+            this.桌面_Label001.getComponent(Label).color = scoreDifference > 0 ? new Color(0, 255, 0) : new Color(255, 0, 0);
+        } else {
+            this.桌面_Label001.active = false;
         }
+
+        // 如果分数差异大于0，加载对应角色的图片资源并执行动画
+        if (scoreDifference > 0) {
+            app.res.loadRes<SpriteFrame>(ResPaths.GameBundle[`角色${DataManager.roomModel.round + 1}Png`]).then(res => {
+                // 设置角色的图片资源
+                this.桌面_角色1.getComponent(Sprite).spriteFrame = res;
+                // 执行角色出现和消失的缩放动画
+                tween(this.桌面_角色1)
+                    .to(.3, { scale: new Vec3(1, 1) })
+                    .delay(1)
+                    .to(.3, { scale: new Vec3(0, 0) })
+                    .call(() => { this.桌面_Label001.active = false; })
+                    .start();
+            });
+        } else {
+            tween(this.桌面_Label001)
+                .delay(1)
+                .call(() => { this.桌面_Label001.active = false; })
+                .start();
+        }
+
+        DataManager.roomModel = msgBody;
+        // 更新当前回合数的显示
         this.node.getChildByPath(NodePaths.GameScenePrefab.桌面_Label).getComponent(Label).string = `第 ${DataManager.roomModel.round + 1} 回合`;
 
+        // 获取当前用户信息
         const myself: UserModel = DataManager.roomModel.users[DataManager.selfModel.userId];
+        // 遍历所有用户，更新用户信息和状态
         for (const user of Object.values(DataManager.roomModel.users)) {
+            // 计算用户在桌面上的位置
             const t = (this["桌面_User00" + (user.pos - myself.pos + 8) % 8] as User);
-            t.node.active = true;
-            t.userInfo = user;
+            t.node.active = true; // 激活用户节点
+            t.userInfo = user; // 更新用户信息
 
+            // 如果是当前用户，激活发光效果
             t.轮到谁谁发光.active = user.userId == DataManager.roomModel.currentUserId;
         }
 
@@ -88,10 +128,6 @@ export class GameScene extends ComponentBase {
 
         this.getChild(NodePaths.GameScenePrefab.顶部栏_房间号框_Label).getComponent(Label).string = "房间号：" + DataManager.roomModel.roomId;
 
-        this.refershPos();
-    }
-
-    update(deltaTime: number) {
-
+        this.refershPos(DataManager.roomModel);
     }
 }

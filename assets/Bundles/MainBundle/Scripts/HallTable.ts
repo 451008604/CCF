@@ -28,17 +28,21 @@ export class HallTable extends ComponentBase {
     async refershTableList() {
         this.getChild(NodePaths.HallTablePrefab.BG_ScrollView_view_Layout).removeAllChildren();
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/getCardTableByCircleId", { circle_id: DataManager.hallModel.id }));
-        if (resData && resData.code == 1000) {
-            const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem4Prefab);
-            const item = instantiate(itemRes);
-            item.getComponent(HallItem4).setStyle(0);
-            this.getChild(NodePaths.HallTablePrefab.BG_ScrollView_view_Layout).addChild(item);
-
-            for (let i = 0; i < resData.data.length; i++) {
+        if (resData) {
+            if (resData.code == 1000) {
+                const itemRes = await app.res.loadRes<Prefab>(ResPaths.MainBundle.HallItem4Prefab);
                 const item = instantiate(itemRes);
-                item.getComponent(HallItem4).setStyle(1);
-                item.getComponent(HallItem4).setData(resData.data[i]);
+                item.getComponent(HallItem4).setStyle(0);
                 this.getChild(NodePaths.HallTablePrefab.BG_ScrollView_view_Layout).addChild(item);
+
+                for (let i = 0; i < resData.data.length; i++) {
+                    const item = instantiate(itemRes);
+                    item.getComponent(HallItem4).setStyle(1);
+                    item.getComponent(HallItem4).setData(resData.data[i]);
+                    this.getChild(NodePaths.HallTablePrefab.BG_ScrollView_view_Layout).addChild(item);
+                }
+            } else {
+                app.ui.showTips(resData.message);
             }
         }
     }
