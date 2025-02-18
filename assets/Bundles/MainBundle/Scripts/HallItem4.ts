@@ -38,7 +38,7 @@ export class HallItem4 extends ComponentBase {
         if (resData) {
             if (resData.code == 1000) {
                 const client = await app.network.client();
-                client.callApi("JoinRoom", { roomId: "" + this._info.code, userInfo: DataManager.selfModel });
+                client.callApi("JoinRoom", { roomId: "" + this._info.code, userInfo: DataManager.selfModel, peopleNum: this._info.people_num });
             } else {
                 app.ui.showTips(resData.message);
             }
@@ -59,7 +59,7 @@ export class HallItem4 extends ComponentBase {
                 for (const user of resData.data) {
                     if (user.user_id == DataManager.selfModel.userId) {
                         const client = await app.network.client();
-                        client.callApi("JoinRoom", { roomId: "" + this._info.code, userInfo: DataManager.selfModel });
+                        client.callApi("JoinRoom", { roomId: "" + this._info.code, userInfo: DataManager.selfModel, peopleNum: this._info.people_num });
                         break;
                     }
                 }

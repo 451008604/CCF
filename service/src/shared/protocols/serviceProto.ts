@@ -40,7 +40,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 18,
+    "version": 19,
     "services": [
         {
             "id": 3,
@@ -149,6 +149,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "target": "../global/data/UserModel"
                             }
                         }
+                    }
+                },
+                {
+                    "id": 6,
+                    "name": "peopleNum",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
@@ -339,6 +346,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../global/data/UserModel"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "peopleNum",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]

@@ -11,6 +11,7 @@ export class Room implements RoomModel {
         this.resultReward = Math.floor(Math.random() + 0.5);
     }
 
+    peopleNum: number = 2;
     resultReward: number = -1;
     roomId: string;
     users: { [key: string]: User; } = {};
@@ -41,7 +42,7 @@ export class Room implements RoomModel {
         }
 
         // 如果房间中的用户数量达到2个，则将房间状态设置为游戏开始
-        if (Object.values(this.users).length == 6) {
+        if (Object.values(this.users).length == this.peopleNum) {
             this.roomStatus = RoomStatus.GAME_START;
         }
 

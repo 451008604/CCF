@@ -19,7 +19,8 @@ export var DataManager: {
         users: {},
         round: 0,
         currentUserId: "",
-        lastUserId: ""
+        lastUserId: "",
+        peopleNum: 0
     },
     /**
      * 用户自身模型

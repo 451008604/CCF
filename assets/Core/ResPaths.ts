@@ -134,6 +134,7 @@ export const ResPaths = {
 		"返回按钮Png": "MainBundle/Res/hall/返回按钮/spriteFrame",
 		"选中Png": "MainBundle/Res/hall/选中/spriteFrame",
 		"部长Png": "MainBundle/Res/hall/部长/spriteFrame",
+		"默认头像Png": "MainBundle/Res/hall/默认头像/spriteFrame",
 		"LogoPng": "MainBundle/Res/loading/logo/spriteFrame",
 		"进度条1Png": "MainBundle/Res/loading/进度条1/spriteFrame",
 		"进度条2Png": "MainBundle/Res/loading/进度条2/spriteFrame",

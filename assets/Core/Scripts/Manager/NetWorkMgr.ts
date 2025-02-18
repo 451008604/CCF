@@ -11,8 +11,8 @@ export class NetWorkMgr {
     static readonly instance: NetWorkMgr = new NetWorkMgr();
 
     private _client: WsClient<ServiceType>;
-    // private _serverConfig = { address: "124.220.169.246", wsProto: "ws", wsPort: "3010", httpProto: "http", httpPort: "3011" };
-    private _serverConfig = { address: "127.0.0.1", wsProto: "ws", wsPort: "3010", httpProto: "http", httpPort: "3011" };
+    private _serverConfig = { address: "124.220.169.246", wsProto: "ws", wsPort: "3010", httpProto: "http", httpPort: "3011" };
+    // private _serverConfig = { address: "127.0.0.1", wsProto: "ws", wsPort: "3010", httpProto: "http", httpPort: "3011" };
 
     /**
      * 获取 WebSocket 服务器地址

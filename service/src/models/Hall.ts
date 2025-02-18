@@ -12,12 +12,19 @@ class Hall {
      * 创建新房间
      * @param roomId 房间ID，如果未提供则使用当前时间戳作为ID
      * @param user 创建房间的用户对象
+     * @param peopleNum 房间的最大人数
      * @returns 返回新创建的房间对象
      */
-    createRoom(roomId: string, user: User) {
+    createRoom(roomId: string, user: User, peopleNum: number) {
+        // 创建一个新的房间对象，如果未提供roomId则使用当前时间戳作为ID
         let room = new Room(roomId || Date.now().toString());
-        room.addUser(user);
+        // 将房间添加到房间列表中
         this.rooms.set(room.roomId, room);
+        // 设置房间的最大人数
+        room.peopleNum = peopleNum;
+        // 将用户添加到房间中
+        room.addUser(user);
+        // 返回新创建的房间对象
         return room;
     }
 

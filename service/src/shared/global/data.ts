@@ -13,6 +13,7 @@ export type RoomModel = {
     lastUserId: string; // 上一个操作的玩家
     currentUserId: string; // 当前操作的玩家
     users: { [key: string]: UserModel; }; // 玩家列表
+    peopleNum: number; // 人数
 };
 
 // 玩家模型
