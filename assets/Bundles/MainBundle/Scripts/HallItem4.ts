@@ -70,9 +70,9 @@ export class HallItem4 extends ComponentBase {
 
         // 刷新座位头像
         for (let i = 0; i < 8; i++) {
-            this.getChild(NodePaths.HallItem4Prefab[`Node_Node_椅子00${i + 1}_默认头像`]).active = false;
+            this.getChild(NodePaths.HallItem4Prefab[`Node_Node_椅子00${i + 1}`]).active = false;
             if (i < userNum) {
-                this.getChild(NodePaths.HallItem4Prefab[`Node_Node_椅子00${i + 1}_默认头像`]).active = true;
+                this.getChild(NodePaths.HallItem4Prefab[`Node_Node_椅子00${i + 1}`]).active = true;
             }
         }
 
