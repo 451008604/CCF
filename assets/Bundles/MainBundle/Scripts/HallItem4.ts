@@ -1,4 +1,4 @@
-import { _decorator, Label, Node } from 'cc';
+import { _decorator, Label, Node, Sprite } from 'cc';
 import { NodePaths } from 'db://assets/Core/NodePaths';
 import { ResPaths } from 'db://assets/Core/ResPaths';
 import { ComponentBase } from 'db://assets/Core/Scripts/Components/ComponentBase';
@@ -67,6 +67,15 @@ export class HallItem4 extends ComponentBase {
                 app.ui.showTips(resData.message);
             }
         }
+
+        // 刷新座位头像
+        for (let i = 0; i < 8; i++) {
+            this.getChild(NodePaths.HallItem4Prefab[`Node_Node_椅子00${i + 1}_默认头像`]).active = false;
+            if (i < userNum) {
+                this.getChild(NodePaths.HallItem4Prefab[`Node_Node_椅子00${i + 1}_默认头像`]).active = true;
+            }
+        }
+
         this.getChild(NodePaths.HallItem4Prefab.Node_Label).getComponent(Label).string = "" + info.name;
         this.getChild(NodePaths.HallItem4Prefab.Node_文本框2_Label).getComponent(Label).string = `猜盲盒：${userNum}/${info.people_num}`;
     }

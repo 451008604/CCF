@@ -1963,7 +1963,7 @@
       "b": 187,
       "a": 255
     },
-    "_string": "",
+    "_string": "  最多8人",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 40,
@@ -2126,7 +2126,7 @@
     },
     "_inputFlag": 5,
     "_inputMode": 6,
-    "_maxLength": 8,
+    "_maxLength": 1,
     "_id": ""
   },
   {

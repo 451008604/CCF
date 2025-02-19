@@ -57,8 +57,10 @@ export class GameResult extends ComponentBase {
         }
     }
 
-    backHome() {
-        app.ui.switchScene(ResPaths.MainBundle.MainScenePrefab);
+    async backHome() {
+        const client = await app.network.client();
+        client.callApi("ExitRoom", {});
+        app.ui.switchScene(ResPaths.MainBundle.HallTablePrefab);
     }
 
     update(deltaTime: number) {

@@ -34,8 +34,7 @@ export default async function (call: ApiCall<ReqUserSelect, ResUserSelect>) {
     if (info.room.users[info.room.currentUserId].selectIdx != -1) {
         // 在场的所有玩家本轮已进行过选择
         info.room.round++;
-        info.room.resultReward = 0;
-        // info.room.resultReward = Math.floor(Math.random() * 2);
+        info.room.resultReward = Math.floor(Math.random() * 2);
         for (const user of Object.values(info.room.users)) {
             user.selectIdx = -1;
         }
@@ -60,7 +59,6 @@ export default async function (call: ApiCall<ReqUserSelect, ResUserSelect>) {
 
     if (info.room.roomStatus == RoomStatus.GAME_END) {
         info.room.roomStatus = RoomStatus.GAME_DISMISS;
-        info.room.clearUser();
     }
     call.succ({});
 }

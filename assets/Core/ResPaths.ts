@@ -85,6 +85,8 @@ export const ResPaths = {
 		"文本框1Png": "MainBundle/Res/hall/亲友圈内部桌子页/文本框1/spriteFrame",
 		"文本框2Png": "MainBundle/Res/hall/亲友圈内部桌子页/文本框2/spriteFrame",
 		"斗地主桌子Png": "MainBundle/Res/hall/亲友圈内部桌子页/斗地主桌子/spriteFrame",
+		"桌子Png": "MainBundle/Res/hall/亲友圈内部桌子页/桌子/spriteFrame",
+		"椅子Png": "MainBundle/Res/hall/亲友圈内部桌子页/椅子/spriteFrame",
 		"猜盲盒桌子Png": "MainBundle/Res/hall/亲友圈内部桌子页/猜盲盒桌子/spriteFrame",
 		"管理Png": "MainBundle/Res/hall/管理页面/管理/spriteFrame",
 		"组124Png": "MainBundle/Res/hall/亲友圈内部桌子页/组 124/spriteFrame",

@@ -1,4 +1,4 @@
-import { _decorator, Component, EditBox, Node } from 'cc';
+import { _decorator, Component, EditBox, math, Node } from 'cc';
 import { NodePaths } from 'db://assets/Core/NodePaths';
 import { ComponentBase } from 'db://assets/Core/Scripts/Components/ComponentBase';
 import { Json } from 'db://assets/Core/Scripts/Utils/Json';
@@ -17,7 +17,7 @@ export class HallTableCreate extends ComponentBase {
 
     async createTable() {
         const name = this.getChild(NodePaths.HallTableCreatePrefab.kuang_Label001_EditBox).getComponent(EditBox).string;
-        const num = this.getChild(NodePaths.HallTableCreatePrefab.kuang_Label002_EditBox).getComponent(EditBox).string;
+        const num = Math.min(Number(this.getChild(NodePaths.HallTableCreatePrefab.kuang_Label002_EditBox).getComponent(EditBox).string), 8);
         const resData = Json.parse(await app.network.request(app.config.getServerAddress() + "/createCardTable", { user_id: DataManager.selfModel.userId, name: name, people_num: num, circle_id: DataManager.hallModel.id }));
         if (resData) {
             if (resData.code == 1000) {
