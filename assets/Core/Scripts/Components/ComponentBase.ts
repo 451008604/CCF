@@ -15,6 +15,8 @@ export abstract class ComponentBase extends Component {
         // 监听节点销毁时，自动清理挂载的自定义监听
         this.node.once(NodeEventType.NODE_DESTROYED, this.destroyAfterHandler, this);
         this.addListen(FrameEnumEventMsgID.NetWorkNotify, this.netWorkHandler);
+        // 默认挂载关闭事件
+        this.node.getChildByName("btn_close")?.once(NodeEventType.TOUCH_END, () => { app.ui.closePanel(this.node.uuid); });
 
         this.onLoadAfter();
     }

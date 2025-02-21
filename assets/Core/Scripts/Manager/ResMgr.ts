@@ -1,4 +1,4 @@
-import { Asset, assetManager, AssetManager, ImageAsset, SpriteFrame, Texture2D } from "cc";
+import { Asset, assetManager, AssetManager, ImageAsset, instantiate, JsonAsset, Node, Prefab, Sprite, SpriteFrame, TextAsset, Texture2D } from "cc";
 import { Parser } from "../Utils/Parser";
 
 /**
@@ -76,26 +76,6 @@ export class ResMgr {
     }
 
     /**
-     * 加载远程图片并返回SpriteFrame
-     * @param remoteUrl 远程图片的URL
-     * @returns 返回一个Promise对象，解析为SpriteFrame
-     */
-    loadRemoteSpriteFrame(remoteUrl: string) {
-        if (!remoteUrl) {
-            return;
-        }
-        return new Promise<SpriteFrame>((resolve, reject) => {
-            this.loadRemoteRes<ImageAsset>(remoteUrl, { ext: ".png" }).then((imageAsset) => {
-                const spriteFrame = new SpriteFrame();
-                const texture = new Texture2D();
-                texture.image = imageAsset;
-                spriteFrame.texture = texture;
-                resolve(spriteFrame);
-            }).catch((err) => reject(err));
-        });
-    }
-
-    /**
      * 加载远程资源并返回指定类型的资源
      * @template T 资源类型，必须继承自Asset
      * @param {string} remoteUrl 远程资源的URL
@@ -152,4 +132,76 @@ export class ResMgr {
             });
         });
     }
+
+    /**
+     * 异步加载并实例化一个预制体资源。
+     * @param resPtah - 预制体资源的路径。
+     * @returns 返回实例化后的预制体对象。
+     */
+    GetPrefabNode(resPtah: string) {
+        return new Promise<Node>((resolve, reject) => {
+            app.res.loadRes<Prefab>(resPtah).then((res) => {
+                resolve(instantiate(res));
+            }).catch(reject);
+        });
+    }
+
+    /**
+     * 异步加载指定路径的精灵帧，并创建一个包含该精灵帧的新节点。
+     * @param resPtah - 精灵帧资源的路径。
+     * @returns 返回一个包含指定精灵帧的新节点。
+     */
+    GetSpriteFrame(resPtah: string) {
+        return new Promise<Node>((resolve, reject) => {
+            app.res.loadRes<SpriteFrame>(resPtah).then((res) => {
+                const node = new Node();
+                node.addComponent(Sprite).spriteFrame = res;
+                resolve(node);
+            }).catch(reject);
+        });
+    }
+
+    /**
+     * 加载远程图片并返回SpriteFrame
+     * @param remoteUrl 远程图片的URL
+     * @returns 返回一个Promise对象，解析为SpriteFrame
+     */
+    GetSpriteFrameRemote(remoteUrl: string) {
+        return new Promise<SpriteFrame>((resolve, reject) => {
+            app.res.loadRemoteRes<ImageAsset>(remoteUrl, { ext: ".png" }).then((imageAsset: ImageAsset) => {
+                const spriteFrame = new SpriteFrame();
+                const texture = new Texture2D();
+                texture.image = imageAsset;
+                spriteFrame.texture = texture;
+                resolve(spriteFrame);
+            }).catch(reject);
+        });
+    }
+
+    /**
+     * 异步加载一个JSON文件。
+     * @param resPath - JSON文件的路径。
+     * @returns 返回解析后的JSON对象。
+     */
+    GetJson(resPath: string) {
+        return new Promise<any>((resolve, reject) => {
+            app.res.loadRes<JsonAsset>(resPath).then((jsonAsset: JsonAsset) => {
+                resolve(jsonAsset.json);
+            }).catch(reject);
+        });
+    }
+
+    /**
+     * 异步加载指定路径下的文本资源。
+     * @param resPath - 文本资源的路径。
+     * @returns 返回加载的文本资源内容。
+     */
+    GetText(resPath: string) {
+        return new Promise<string>((resolve, reject) => {
+            app.res.loadRes<TextAsset>(resPath).then((textAsset: TextAsset) => {
+                resolve(textAsset.text);
+            }).catch(reject);
+        });
+    }
+
 }

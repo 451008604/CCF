@@ -12,7 +12,6 @@ export class Main extends ComponentBase {
 
         // 展示主场景
         app.ui.switchScene(ResPaths.MainBundle.MainScenePrefab);
-        app.res.loadRes(ResPaths.GameBundle.GameScenePrefab);
     }
 
 }

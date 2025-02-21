@@ -222,7 +222,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "设置按钮",
+    "_name": "btn_close",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -2018,7 +2018,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1920,
+      "width": 1920.0000000000002,
       "height": 1080
     },
     "_anchorPoint": {
