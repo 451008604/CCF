@@ -131,7 +131,9 @@ export class UIMgr {
             this.closePanel(child.uuid);
         }
 
-        const prefab = await app.res.loadRes<Prefab>(scenePath, (progress: number) => { this.loadingComponent?.updateProgress(progress); });
+        const prefab = await app.res.loadRes<Prefab>(scenePath, (progress: number) => {
+            this.loadingComponent?.updateProgress(progress);
+        });
         this.loadingComponent?.hide();
         // 移除上一个场景
         this.sceneLayer.removeChild(this.curShowScene);
