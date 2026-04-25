@@ -1,3 +1,6 @@
+import { MsgId } from "db://assets/Model/Enum";
+import { FrameEnumEventMsgID } from "../FrameEnum";
+
 /**
  * 事件管理器
  */
@@ -40,7 +43,7 @@ export class EventMgr {
      * @param cmd 事件ID
      * @param data 形参数据
      */
-    send(cmd: number, ...data: any) {
+    send(cmd: MsgId | FrameEnumEventMsgID, ...data: any) {
         this.listenMap.get(cmd)?.forEach((callback, thisObject) => {
             callback.call(thisObject, ...data);
         });
