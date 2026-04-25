@@ -9,7 +9,8 @@ import { TimerMgr } from "./Manager/TimerMgr";
 import { LangMgr } from "./Manager/LangMgr";
 import { UIMgr } from "./Manager/UIMgr";
 import { NetWorkMgr } from "./Manager/NetWorkMgr";
-
+import { MiniSdk } from "./Utils/MiniSdk";
+import { Config } from "./Utils/Config";
 /**
  * Core 类
  * 负责映射导出框架接口
@@ -44,6 +45,12 @@ export class Core {
 
     /**网络管理器 */
     network: NetWorkMgr = NetWorkMgr.instance;
+
+    /**小游戏SDK */
+    miniSdk: MiniSdk = MiniSdk.instance;
+
+    /**配置管理器 */
+    config: Config = Config.instance;
 }
 
 /** 全局 Window 接口 */
