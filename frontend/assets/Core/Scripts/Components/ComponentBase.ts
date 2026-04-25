@@ -1,6 +1,7 @@
-import { __private, Component, Node, NodeEventType } from "cc";
+import { __private, Component, Font, Label, math, Node, NodeEventType } from "cc";
 import { FrameEnumEventMsgID } from "../FrameEnum";
 import { ServiceType } from "../../../NetWork/shared/protocols/serviceProto";
+import { ResPaths } from "../../ResPaths";
 
 /**
  * 组件基类。用于替代`cc.Component`
@@ -11,7 +12,7 @@ export abstract class ComponentBase extends Component {
      * 如需使用请替换为`onLoadAfter()`
      * @deprecated 由父类执行，子类请勿覆盖
      */
-    protected onLoad() {
+    protected async onLoad() {
         // 监听节点销毁时，自动清理挂载的自定义监听
         this.node.once(NodeEventType.NODE_DESTROYED, this.destroyAfterHandler, this);
         this.addListen(FrameEnumEventMsgID.NetWorkNotify, this.netWorkHandler);
@@ -19,6 +20,17 @@ export abstract class ComponentBase extends Component {
         this.node.getChildByName("btn_close")?.once(NodeEventType.TOUCH_END, () => { app.ui.closePanel(this.node.uuid); });
 
         this.onLoadAfter();
+
+        // 替换字体资源
+        if (ResPaths.MainBundle["FontTtf"]) {
+            const font = await app.res.loadRes<Font>(ResPaths.MainBundle["FontTtf"]);
+            if (this.node) {
+                for (const labelCom of this.node.getComponentsInChildren(Label)) {
+                    labelCom.useSystemFont = false;
+                    labelCom.font = font;
+                }
+            }
+        }
     }
 
     /**
@@ -35,7 +47,7 @@ export abstract class ComponentBase extends Component {
      * @returns 子节点
      */
     protected getChild(path: string) {
-        return this.node.getChildByPath(path);
+        return this.node?.getChildByPath(path);
     }
 
     /**
@@ -46,7 +58,18 @@ export abstract class ComponentBase extends Component {
      * this.bindNodeClickHandler("UI/Button", this.onButtonClick);
      */
     protected bindNodeClickHandler(nodePath: string, clickHandler: Function) {
-        this.getChild(nodePath).on(Node.EventType.TOUCH_END, clickHandler, this);
+        const node = this.getChild(nodePath);
+        const scale = node.scale.clone();
+        node.on(Node.EventType.TOUCH_START, () => {
+            node.setScale(math.v3(scale.x - 0.1, scale.y - 0.1, scale.z));
+        }, this);
+        node.on(Node.EventType.TOUCH_CANCEL, () => {
+            node.setScale(scale);
+        }, this);
+        node.on(Node.EventType.TOUCH_END, (res: any) => {
+            node.setScale(scale);
+            clickHandler.call(this, res);
+        }, this);
     }
 
     /**

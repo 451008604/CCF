@@ -7,7 +7,7 @@ const { ccclass, property, requireComponent } = _decorator;
 @requireComponent(Label)
 @requireComponent(RichText)
 export class I18nLabel extends I18nBase {
-    @property({ visible: true, displayName: "i18n_key" })
+    @property({ visible: true, displayName: "多语言key" })
     private _key: string = "";
 
     private lbl: Label | RichText | null = null;

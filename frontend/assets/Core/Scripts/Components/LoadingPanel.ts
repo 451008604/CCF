@@ -2,7 +2,6 @@ import { _decorator, BlockInputEvents, NodeEventType, ProgressBar, sys } from 'c
 import { ComponentBase } from './ComponentBase';
 import { FrameEnumEventMsgID } from '../FrameEnum';
 import { DataManager } from 'db://assets/Model/DataManager';
-import { MiniSdk } from '../Utils/MiniSdk';
 const { ccclass, property } = _decorator;
 
 /**
@@ -50,15 +49,15 @@ export class LoadingPanel extends ComponentBase {
                     DataManager.selfModel.token = token || "" + now;
                     DataManager.selfModel.userName = "玩家_" + DataManager.selfModel.token.slice(10);
                     app.storage.setData("token", DataManager.selfModel.token);
-                    // 初始化网络管理器
-                    app.network.client();
+                    // TODO 初始化网络管理器
+                    // app.network.client();
                 } else {
                     // 获取用户昵称和头像
-                    MiniSdk.createUserInfoButton().then(userInfo => {
+                    app.miniSdk.createUserInfoButton().then(userInfo => {
                         userInfo.nickName && (DataManager.selfModel.userName = userInfo.nickName);
                         userInfo.avatarUrl && (DataManager.selfModel.headImg = userInfo.avatarUrl);
-                        // 初始化网络管理器
-                        app.network.client();
+                        // TODO 初始化网络管理器
+                        // app.network.client();
                     }).catch(() => app.ui.showTips("获取用户信息失败"));
                 }
             } else {
