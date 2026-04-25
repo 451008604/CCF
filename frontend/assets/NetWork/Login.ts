@@ -23,7 +23,7 @@ export async function ApiLoginReq(client: WsClient<ServiceType>) {
     const deviceId = app.storage.getText("deviceId") || sys.platform.toString() + Date.now().toString();
     app.storage.setData('deviceId', deviceId);
 
-    const userInfo = Json.parse(await app.network.request(Config.serverAddress + "/userLogin", { username: deviceId, pwd: deviceId }));
+    const userInfo = Json.parse(await app.network.request(app.config.getServerAddress() + "/userLogin", { username: deviceId, pwd: deviceId }));
     if (!userInfo) {
         app.ui.showTips("登录失败");
         return;
@@ -31,7 +31,7 @@ export async function ApiLoginReq(client: WsClient<ServiceType>) {
 
     if (userInfo["code"] != 1000) {
         // 登录失败时进行注册并重新登录
-        await app.network.request(Config.serverAddress + "/userRegister", { username: deviceId, pwd: deviceId, nickname: "玩家" + deviceId.substring(deviceId.length - 5) });
+        await app.network.request(app.config.getServerAddress() + "/userRegister", { username: deviceId, pwd: deviceId, nickname: "玩家" + deviceId.substring(deviceId.length - 5) });
         return ApiLoginReq(client);
     }
 
